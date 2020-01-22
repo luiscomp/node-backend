@@ -19,9 +19,6 @@ class UsuarioPersistence {
 
     listar(usuario: Usuario, pagina: Number): Promise<Array<Usuario>> {
         return new Promise((resolve, reject) => {
-
-            
-
             resolve(this.lista);
         })
     }
@@ -29,6 +26,16 @@ class UsuarioPersistence {
     quantidade(usuario: Usuario, pagina: Number): Promise<Number> {
         return new Promise((resolve, reject) => {
             resolve(this.lista.length);
+        })
+    }
+
+    recuperar(id: Number): Promise<Usuario> {
+        return new Promise((resolve, reject) => {
+            let usuario: Usuario = this.lista.map(u => {
+                if(u.id === id) return u;
+            })[0];
+
+            resolve(usuario);
         })
     }
 }

@@ -12,7 +12,7 @@ class UsuarioRoutes {
     }
 
     recuperar(req: Request, res: Response) {
-        return UsuarioServ.recuperar(req, res)
+        return UsuarioServ.recuperar(req.params.id, res)
     }
 
     novo(req: Request, res: Response) {

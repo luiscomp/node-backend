@@ -30,7 +30,18 @@ class UsuarioService {
         }
     }
 
-    recuperar(req: Request, res: Response) {
+    async recuperar(id: Number, res: Response) {
+        let resultado: ObjetoResultado = new ObjetoResultado();
+        try {
+            resultado.item = await this.usuarioPersistence.recuperar(id)
+
+        } catch(error) {
+            resultado.status = CodigosResposta[CodigosResposta.FALHA];
+            resultado.mensagem = error;
+
+            res.status(HTTPStatus.INTERNAL_SERVER_ERROR).json(resultado);
+        }
+
         res.status(HTTPStatus.OK).json({
             message: 'OK'
         });
