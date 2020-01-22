@@ -10,7 +10,7 @@ class Routes {
     }
 
     getRoutes(app: Application): void {
-        app.route('/api/usuario/listar').post(this.router.listar);
+        app.route('/api/usuario/listar/:pagina*?').post(this.router.listar);
         app.route('/api/usuario/novo').post(this.router.novo);
         app.route('/api/usuario/:id').get(this.router.recuperar);
         app.route('/api/usuario/:id/atualizar').put(this.router.atualizar);

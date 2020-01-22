@@ -1,8 +1,9 @@
 import * as HTTPStatus from 'http-status';
 import { Request, Response } from 'express';
 import UsuarioPersistence from '../persistence/UsuarioPersistence';
-import { IUsuario } from '../model/Usuario';
-import { IObjetoResultado } from '../model/ObjetoResultado';
+import CodigosResposta from '../utils/CodigosResposta';
+import ObjetoResultado from '../model/ObjetoResultado';
+import Usuario from '../model/Usuario';
 
 class UsuarioService {
 
@@ -12,26 +13,21 @@ class UsuarioService {
         this.usuarioPersistence = new UsuarioPersistence();
     }
 
-    listar(usuario: IUsuario, pagina: Number, res: Response) {
-        let resultado: IObjetoResultado;
-
-        this.usuarioPersistence.listar(usuario, pagina).then(lista => {
-            resultado = {
-                status: 'SUCESSO',
-                mensagem: 'Lista recuperada com sucesso',
-                lista: lista,
-                quantidade: lista.length
-            }
+    async listar(usuario: Usuario, pagina: Number, res: Response) {
+        let resultado: ObjetoResultado = new ObjetoResultado();
+        try {
+            resultado.lista = await this.usuarioPersistence.listar(usuario, pagina);
+            resultado.quantidade = await this.usuarioPersistence.quantidade(usuario, pagina);
+            resultado.status = CodigosResposta[CodigosResposta.SUCESSO];
+            resultado.mensagem = 'Lista recuperada com sucesso'
 
             res.status(HTTPStatus.OK).json(resultado);
-        }).catch(err => {
-            resultado = {
-                status: 'FALHA',
-                mensagem: 'Falha ao listar usuários',
-            }
+        } catch(error) {
+            resultado.status = CodigosResposta[CodigosResposta.FALHA];
+            resultado.mensagem = error;
 
             res.status(HTTPStatus.INTERNAL_SERVER_ERROR).json(resultado);
-        })
+        }
     }
 
     recuperar(req: Request, res: Response) {

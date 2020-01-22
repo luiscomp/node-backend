@@ -1,8 +1,11 @@
-import { IBase } from "./Base";
+import { IUsuario } from "./types/IUsuario";
 
-export interface IUsuario extends IBase {
-    nome: String,
-    email: String,
-    senha: String
+class Usuario implements IUsuario {
+    id: Number;
+    nome: String;    
+    email: String;
+    senha: String;
+
+    constructor() {}
 }
-
+export default Usuario;

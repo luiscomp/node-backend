@@ -1,9 +1,10 @@
 import * as express from 'express';
 import { Application } from 'express';
+import { errorHandlerApi } from './errorHandlerApi';
+import { corsConfig } from './corsConfig';
 import * as morgan from 'morgan';
 import * as bodyParser from 'body-parser';
 import Routes from './routes/routes';
-import  {errorHandlerApi } from './errorHandlerApi';
 
 class Api {
     public express: Application;
@@ -15,9 +16,11 @@ class Api {
 
     middleware(): void {
         this.express.use(morgan('dev'));
-        this.express.use(bodyParser.urlencoded( { extended: true } ));
-        this.express.use(bodyParser.json());
+        this.express.use(bodyParser.urlencoded( { extended: true , type: 'application/json'} ));
+        this.express.use(bodyParser.json( { type: 'application/json', limit: '5mb' } ));
         this.express.use(errorHandlerApi);
+        // this.express.use(corsConfig);
+        
         this.router(this.express);
     }
 

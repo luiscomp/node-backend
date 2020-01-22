@@ -1,7 +1,13 @@
-export interface IObjetoResultado {
-    status: String,
-    mensagem: String,
-    item?: any,
-    lista?: Array<any>,
-    quantidade?: Number,
+import { IObjetoResultado } from "./types/IObjetoResultado";
+
+class ObjetoResultado implements IObjetoResultado {
+    status: String;    
+    mensagem: String;
+    item?: any;
+    lista?: any[];
+    quantidade?: Number;
+
+    constructor() {}
 }
+
+export default ObjetoResultado;

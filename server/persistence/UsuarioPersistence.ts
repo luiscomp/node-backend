@@ -1,7 +1,7 @@
-import { IUsuario } from "../model/Usuario";
+import Usuario from "../model/Usuario";
 
 class UsuarioPersistence {
-    private lista: Array<IUsuario>;
+    private lista: Array<Usuario>;
 
     constructor() {
         this.lista = [{
@@ -10,16 +10,25 @@ class UsuarioPersistence {
             email: 'luizeduardo354@gmail.com',
             senha: '123456'
         },{
-            id: 1,
+            id: 2,
             nome: 'Thays Ferreira',
             email: 'thaysferreira@gmail.com',
             senha: '654321'
         }]
     }
 
-    listar(usuario: IUsuario, pagina: Number): Promise<Array<IUsuario>> {
+    listar(usuario: Usuario, pagina: Number): Promise<Array<Usuario>> {
         return new Promise((resolve, reject) => {
+
+            
+
             resolve(this.lista);
+        })
+    }
+
+    quantidade(usuario: Usuario, pagina: Number): Promise<Number> {
+        return new Promise((resolve, reject) => {
+            resolve(this.lista.length);
         })
     }
 }
