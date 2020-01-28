@@ -16,7 +16,7 @@ class UsuarioRoutes {
     }
 
     novo(req: Request, res: Response) {
-        return UsuarioServ.novo(req, res)
+        return UsuarioServ.novo(req.body, res)
     }
 
     atualizar(req: Request, res: Response) {

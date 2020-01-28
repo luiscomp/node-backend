@@ -16,10 +16,10 @@ class Api {
 
     middleware(): void {
         this.express.use(morgan('dev'));
-        this.express.use(bodyParser.urlencoded( { extended: true , type: 'application/json'} ));
-        this.express.use(bodyParser.json( { type: 'application/json', limit: '5mb' } ));
+        this.express.use(bodyParser.urlencoded( { extended: true} ));
+        this.express.use(bodyParser.json());
         this.express.use(errorHandlerApi);
-        // this.express.use(corsConfig);
+        this.express.use(corsConfig);
         
         this.router(this.express);
     }

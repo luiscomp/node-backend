@@ -19,7 +19,7 @@ class UsuarioService {
             resultado.lista = await this.usuarioPersistence.listar(usuario, pagina);
             resultado.quantidade = await this.usuarioPersistence.quantidade(usuario, pagina);
             resultado.status = CodigosResposta[CodigosResposta.SUCESSO];
-            resultado.mensagem = 'Lista recuperada com sucesso'
+            resultado.mensagem = 'Lista recuperada com sucesso';
 
             res.status(HTTPStatus.OK).json(resultado);
         } catch(error) {
@@ -33,24 +33,33 @@ class UsuarioService {
     async recuperar(id: Number, res: Response) {
         let resultado: ObjetoResultado = new ObjetoResultado();
         try {
-            resultado.item = await this.usuarioPersistence.recuperar(id)
+            resultado.item = await this.usuarioPersistence.recuperar(id);
+            resultado.status = CodigosResposta[CodigosResposta.SUCESSO];
+            resultado.mensagem = 'Usuário recuperado com sucesso';
 
+            res.status(HTTPStatus.OK).json(resultado);
         } catch(error) {
             resultado.status = CodigosResposta[CodigosResposta.FALHA];
             resultado.mensagem = error;
 
             res.status(HTTPStatus.INTERNAL_SERVER_ERROR).json(resultado);
         }
-
-        res.status(HTTPStatus.OK).json({
-            message: 'OK'
-        });
     }
 
-    novo(req: Request, res: Response) {
-        res.status(HTTPStatus.OK).json({
-            message: 'OK'
-        });
+    async novo(usuario: Usuario, res: Response) {
+        let resultado: ObjetoResultado = new ObjetoResultado();
+        try {
+            resultado.item = await this.usuarioPersistence.novo(usuario);
+            resultado.status = CodigosResposta[CodigosResposta.SUCESSO];
+            resultado.mensagem = 'Usuário gravado com sucesso';
+
+            res.status(HTTPStatus.OK).json(resultado);
+        } catch(error) {
+            resultado.status = CodigosResposta[CodigosResposta.FALHA];
+            resultado.mensagem = error;
+
+            res.status(HTTPStatus.INTERNAL_SERVER_ERROR).json(resultado);
+        }
     }
 
     atualizar(req: Request, res: Response) {

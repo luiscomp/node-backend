@@ -1,5 +1,6 @@
 import { testDouble, expect } from './config/helpers';
 import UsuarioPersistence from '../../server/persistence/UsuarioPersistence'
+import Usuario from '../../server/model/Usuario';
 
 describe('Testes Unitários do Controller', () => {
     describe('Método listar()', () => {
@@ -29,15 +30,26 @@ describe('Testes Unitários do Controller', () => {
 
             const data = await persistence.recuperar(1);
             expect(data).to.be.an('object');
-            expect(data.nome).to.equals('Luis Eduardo');
-            expect(data.email).to.equals('luizeduardo354@gmail.com');
-            expect(data.senha).to.equals('123456');
+            expect(data.nome).to.be.equals('Luis Eduardo');
+            expect(data.email).to.be.equals('luizeduardo354@gmail.com');
+            expect(data.senha).to.be.equals('123456');
         });
     });
 
     describe('Método novo()', () => {
-        it('Deve criar um novo usuário', () =>{
+        it('Deve criar um novo usuário', async () =>{
+            const persistence = new UsuarioPersistence();
 
+            const usuario: Usuario = new Usuario();
+            usuario.nome = 'Novo Usuario';
+            usuario.email = 'novo@email.com';
+            usuario.senha = '159487'
+
+            const data = await persistence.novo(usuario);
+            expect(data).to.be.an('object');
+            expect(data.nome).to.be.equals('Novo Usuario');
+            expect(data.email).to.be.equals('novo@email.com');
+            expect(data.senha).to.be.equals('159487');
         });
     });
 

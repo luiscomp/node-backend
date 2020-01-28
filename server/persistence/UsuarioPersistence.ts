@@ -38,6 +38,15 @@ class UsuarioPersistence {
             resolve(usuario);
         })
     }
+
+    novo(usuario: Usuario): Promise<Usuario> {
+        return new Promise((resolve, reject) => {
+            usuario.id = this.lista.length + 1;
+            this.lista.push(usuario);
+
+            resolve(usuario);
+        })
+    }
 }
 
 export default UsuarioPersistence;

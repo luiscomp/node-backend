@@ -31,13 +31,13 @@ describe('Testes de Integração', () => {
 
     describe('POST /api/usuario/novo', () => {
         it('Deve gravar um novo usuário se passado sem o id', done => {
-            const user = {
+            const usuario = {
                 nome: "Teste"
             }
 
             request(app)
                 .post(`/api/usuario/novo`)
-                .send(user)
+                .send(usuario)
                 .end((error, res) => {
                     expect(res.status).to.equal(HTTPStatus.OK);
                     done(error);
@@ -47,13 +47,13 @@ describe('Testes de Integração', () => {
 
     describe('PUT /api/usuario/:id/atualizar', () => {
         it('Deve editar um usuário existente se passado com o id', done => {
-            const user = {
+            const usuario = {
                 nome: "Teste Update"
             }
 
             request(app)
                 .put(`/api/usuario/${1}/atualizar`)
-                .send(user)
+                .send(usuario)
                 .end((error, res) => {
                     expect(res.status).to.equal(HTTPStatus.OK);
                     done(error);
