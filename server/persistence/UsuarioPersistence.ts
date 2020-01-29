@@ -31,10 +31,10 @@ class UsuarioPersistence {
 
     recuperar(id: Number): Promise<Usuario> {
         return new Promise((resolve, reject) => {
-            let usuario: Usuario = this.lista.map(u => {
+            let usuario: Usuario = this.lista.filter(u => {
                 if(u.id === id) return u;
-            })[0];
-
+            }).pop();
+            
             resolve(usuario);
         })
     }

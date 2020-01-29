@@ -8,23 +8,23 @@ class UsuarioRoutes {
     }
 
     listar(req: Request, res: Response) {
-        return UsuarioServ.listar(req.body, req.params.pagina, res)
+        return UsuarioServ.listar(req.body, req.params.pagina, res);
     }
 
     recuperar(req: Request, res: Response) {
-        return UsuarioServ.recuperar(req.params.id, res)
+        return UsuarioServ.recuperar(parseInt(req.params.id), res);
     }
 
     novo(req: Request, res: Response) {
-        return UsuarioServ.novo(req.body, res)
+        return UsuarioServ.novo(req.body, res);
     }
 
     atualizar(req: Request, res: Response) {
-        return UsuarioServ.atualizar(req, res)
+        return UsuarioServ.atualizar(req.body, res);
     }
 
     deletar(req: Request, res: Response) {
-        return UsuarioServ.deletar(req, res)
+        return UsuarioServ.deletar(parseInt(req.params.id), res);
     }
 }
 

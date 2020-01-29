@@ -4,10 +4,10 @@
   "description": "API de Estudo com TS, NODE, ES6, Postgres e Sequelize",
   "main": "server/server.ts",
   "scripts": {
-    "start": "NODE_ENV=development ./node_modules/.bin/ts-node ./server/server.ts",
-    "builded": "NODE_ENV=development node ./dist/server/server.js",
-    "u-test": "NODE_ENV=test mocha --opts ./tests/unit/config/mocha.opts ./dist/tests/unit/unit.test.js",
-    "i-test": "NODE_ENV=test mocha --opts ./tests/integration/config/mocha.opts ./dist/tests/integration/integration.test.js",
+    "start": "cross-env NODE_ENV=development ./node_modules/.bin/ts-node ./server/server.ts",
+    "builded": "cross-env NODE_ENV=development node ./dist/server/server.js",
+    "u-test": "cross-env NODE_ENV=test mocha --opts ./tests/unit/config/mocha.opts ./dist/tests/unit/unit.test.js",
+    "i-test": "cross-env NODE_ENV=test mocha --opts ./tests/integration/config/mocha.opts ./dist/tests/integration/integration.test.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -40,6 +40,7 @@
     "@types/sequelize": "^4.28.8",
     "@types/supertest": "^2.0.8",
     "chai": "^4.2.0",
+    "cross-env": "^7.0.0",
     "mocha": "^7.0.0",
     "supertest": "^4.0.2",
     "testdouble": "^3.12.5",
