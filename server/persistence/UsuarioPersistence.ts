@@ -47,6 +47,29 @@ class UsuarioPersistence {
             resolve(usuario);
         })
     }
+    
+    atualizar(usuario: Usuario): Promise<Usuario> {
+        return new Promise((resolve, reject) => {
+            this.lista = this.lista.map(u => {
+                if(u.id === usuario.id) {
+                    return usuario;
+                }
+                return u;
+            });
+            
+            resolve(usuario);
+        })
+    }
+
+    deletar(id: Number): Promise<void> {
+        return new Promise((resolve, reject) => {
+            this.lista = this.lista.filter(u => {
+                if(u.id !== id) return u;
+            });
+            
+            resolve();
+        })
+    }
 }
 
 export default UsuarioPersistence;

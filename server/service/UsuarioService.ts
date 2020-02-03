@@ -62,16 +62,36 @@ class UsuarioService {
         }
     }
 
-    atualizar(req: Request, res: Response) {
-        res.status(HTTPStatus.OK).json({
-            message: 'OK'
-        });
+    async atualizar(usuario: Usuario, res: Response) {
+        let resultado: ObjetoResultado = new ObjetoResultado();
+        try {
+            resultado.item = await this.usuarioPersistence.atualizar(usuario);
+            resultado.status = CodigosResposta[CodigosResposta.SUCESSO];
+            resultado.mensagem = 'Usuário atualizado com sucesso';
+
+            res.status(HTTPStatus.OK).json(resultado);
+        } catch(error) {
+            resultado.status = CodigosResposta[CodigosResposta.FALHA];
+            resultado.mensagem = error;
+
+            res.status(HTTPStatus.INTERNAL_SERVER_ERROR).json(resultado);
+        }
     }
 
-    deletar(req: Request, res: Response) {
-        res.status(HTTPStatus.OK).json({
-            message: 'OK'
-        });
+    async deletar(id: Number, res: Response) {
+        let resultado: ObjetoResultado = new ObjetoResultado();
+        try {
+            resultado.item = await this.usuarioPersistence.deletar(id);
+            resultado.status = CodigosResposta[CodigosResposta.SUCESSO];
+            resultado.mensagem = 'Usuário deletado com sucesso';
+
+            res.status(HTTPStatus.OK).json(resultado);
+        } catch(error) {
+            resultado.status = CodigosResposta[CodigosResposta.FALHA];
+            resultado.mensagem = error;
+
+            res.status(HTTPStatus.INTERNAL_SERVER_ERROR).json(resultado);
+        }
     }
 }
 

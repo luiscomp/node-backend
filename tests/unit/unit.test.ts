@@ -54,14 +54,34 @@ describe('Testes Unitários do Controller', () => {
     });
 
     describe('Método atualizar()', () => {
-        it('Deve retornar uma lista com todos os usuários', () =>{
+        it('Deve retornar uma lista com todos os usuários', async () =>{
+            const persistence = new UsuarioPersistence();
 
+            const usuario: Usuario = new Usuario();
+            usuario.id = 1;
+            usuario.nome = 'Luis Eduardo Miranda';
+            usuario.email = 'novo@email.com';
+            usuario.senha = '159487'
+
+            await persistence.atualizar(usuario);
+            const data: Usuario = await persistence.recuperar(1);
+
+            expect(data).to.be.an('object');
+            expect(data.nome).to.be.equals('Luis Eduardo Miranda');
+            expect(data.email).to.be.equals('novo@email.com');
+            expect(data.senha).to.be.equals('159487');
         });
     });
 
     describe('Método deletar()', () => {
-        it('Deve deletar um usuário', () =>{
+        it('Deve deletar um usuário', async () =>{
+            const persistence = new UsuarioPersistence();
 
+            await persistence.deletar(1);
+            const data = await persistence.quantidade(null, 1);
+
+            expect(data).to.be.an('number');
+            expect(data).to.be.equals(1);
         });
     });
 });
