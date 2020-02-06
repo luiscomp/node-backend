@@ -1,5 +1,5 @@
 import * as HTTPStatus from 'http-status';
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import UsuarioPersistence from '../persistence/UsuarioPersistence';
 import CodigosResposta from '../utils/CodigosResposta';
 import ObjetoResultado from '../model/ObjetoResultado';

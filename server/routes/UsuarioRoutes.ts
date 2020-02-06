@@ -1,9 +1,8 @@
 import { Request, Response } from 'express';
 import UsuarioService from '../service/UsuarioService';
-let usuarioServ;
-class UsuarioRoutes {
+let usuarioServ: UsuarioService;
 
-    // private usuarioServ: UsuarioService;
+class UsuarioRoutes {
 
     constructor() {
         usuarioServ = new UsuarioService();
