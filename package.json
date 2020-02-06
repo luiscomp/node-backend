@@ -14,10 +14,12 @@
     "API",
     "TypeScript",
     "Node",
-    "ES6"
+    "ES6",
+    "Ajv",
+    "Backend"
   ],
   "author": "Luis Eduardo",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "ajv": "^6.11.0",
     "ajv-errors": "^1.0.1",
