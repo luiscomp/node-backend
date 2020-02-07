@@ -1,5 +1,6 @@
 import * as HTTPStatus from 'http-status';
 import { Response } from 'express';
+import { getLogger, Logger } from 'log4js';
 import UsuarioPersistence from '../persistence/UsuarioPersistence';
 import CodigosResposta from '../utils/CodigosResposta';
 import ObjetoResultado from '../model/ObjetoResultado';
@@ -8,9 +9,11 @@ import Usuario from '../model/Usuario';
 class UsuarioService {
 
     private usuarioPersistence: UsuarioPersistence;
+    private logger: Logger;
 
     constructor() {
         this.usuarioPersistence = new UsuarioPersistence();
+        this.logger = getLogger("logger");
     }
 
     async listar(usuario: Usuario, pagina: Number, res: Response) {
@@ -23,6 +26,8 @@ class UsuarioService {
 
             res.status(HTTPStatus.OK).json(resultado);
         } catch(error) {
+            this.logger.error(error);
+
             resultado.status = CodigosResposta[CodigosResposta.FALHA];
             resultado.mensagem = error;
 
@@ -39,6 +44,8 @@ class UsuarioService {
 
             res.status(HTTPStatus.OK).json(resultado);
         } catch(error) {
+            this.logger.error(error);
+
             resultado.status = CodigosResposta[CodigosResposta.FALHA];
             resultado.mensagem = error;
 
@@ -55,6 +62,8 @@ class UsuarioService {
 
             res.status(HTTPStatus.OK).json(resultado);
         } catch(error) {
+            this.logger.error(error);
+
             resultado.status = CodigosResposta[CodigosResposta.FALHA];
             resultado.mensagem = error;
 
@@ -71,6 +80,8 @@ class UsuarioService {
 
             res.status(HTTPStatus.OK).json(resultado);
         } catch(error) {
+            this.logger.error(error);
+
             resultado.status = CodigosResposta[CodigosResposta.FALHA];
             resultado.mensagem = error;
 
@@ -87,6 +98,8 @@ class UsuarioService {
 
             res.status(HTTPStatus.OK).json(resultado);
         } catch(error) {
+            this.logger.error(error);
+
             resultado.status = CodigosResposta[CodigosResposta.FALHA];
             resultado.mensagem = error;
 
