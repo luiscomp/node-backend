@@ -5,4 +5,5 @@ export interface IObjetoResultado {
     item?: any,
     lista?: Array<any>,
     quantidade?: Number,
+    token?: String;
 }

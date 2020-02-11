@@ -7,6 +7,7 @@ class ObjetoResultado implements IObjetoResultado {
     item?: any;
     lista?: any[];
     quantidade?: Number;
+    token?: String;
 
     constructor() {}
 }
