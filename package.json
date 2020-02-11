@@ -8,7 +8,8 @@
     "builded": "cross-env NODE_ENV=development node ./dist/server/server.js",
     "u-test": "cross-env NODE_ENV=test mocha --opts ./tests/unit/config/mocha.opts ./dist/tests/unit/unit.test.js",
     "i-test": "cross-env NODE_ENV=test mocha --opts ./tests/integration/config/mocha.opts ./dist/tests/integration/integration.test.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "i-cover": "nyc --reporter=html npm run i-test",
+    "u-cover": "nyc --reporter=html npm run u-test"
   },
   "keywords": [
     "API",
@@ -52,7 +53,9 @@
     "@types/supertest": "^2.0.8",
     "chai": "^4.2.0",
     "cross-env": "^7.0.0",
+    "istanbul": "^0.4.5",
     "mocha": "^7.0.0",
+    "nyc": "^15.0.0",
     "supertest": "^4.0.2",
     "testdouble": "^3.12.5",
     "ts-node": "^8.5.4",

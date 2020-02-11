@@ -1,15 +1,62 @@
 import * as HTTPStatus from 'http-status';
+import * as jwt from 'jsonwebtoken';
 import { app, request, expect } from './config/helpers';
 import Usuario from '../../server/model/Usuario';
 
 describe('Testes de Integração', () => {
 
     'use strict';
+    const config = require('../../server/config/config')();
+    let token: String;
+
+    beforeEach((done) => {
+        token = jwt.sign({ id: 1 }, config.secret, { expiresIn: '30m' });
+        done();
+    })
+
+    describe('POST /api/auth/token ', () => {
+        it('Deve autenticar e receber um token de acesso', done => {
+            const usuario: Usuario = new Usuario();
+            usuario.email = 'luizeduardo354@gmail.com';
+            usuario.senha = '123456';
+
+            request(app)
+                .post('/api/auth/token')
+                .send(usuario)
+                .end((error, res) => {
+                    expect(res.status).to.equal(HTTPStatus.OK);
+                    expect(res.body.item).to.be.an('object');
+                    expect(res.body.item.id).to.be.equals(1);
+                    expect(res.body.token).to.not.empty
+                    done(error)
+                })
+        });
+    });
+
+    describe('POST /api/auth/token ', () => {
+        it('Não deve autenticar nem gerar token de autenticação', done => {
+            const usuario: Usuario = new Usuario();
+            usuario.email = 'email@errado.com';
+            usuario.senha = '984651';
+
+            request(app)
+                .post('/api/auth/token')
+                .send(usuario)
+                .end((error, res) => {
+                    expect(res.status).to.equal(HTTPStatus.UNAUTHORIZED);
+                    expect(res.body).to.empty;
+                    done(error)
+                })
+        });
+    });
     
     describe('POST /api/usuario/listar', () => {
         it('Deve retornar um JSON com todos os usuários', done => {
             request(app)
                 .post(`/api/usuario/listar`)
+                .set('Content-Type', 'application/json')
+                .set('Accept', 'application/json')
+                .set('Authorization', `Bearer ${token}`)
                 .end((error, res) => {
                     expect(res.status).to.equal(HTTPStatus.OK);
                     expect(res.body.lista).to.be.an('array')
@@ -23,6 +70,9 @@ describe('Testes de Integração', () => {
         it('Deve retornar um JSON com o usuário informado', done => {
             request(app)
                 .get(`/api/usuario/${1}`)
+                .set('Content-Type', 'application/json')
+                .set('Accept', 'application/json')
+                .set('Authorization', `Bearer ${token}`)
                 .end((error, res) => {
                     expect(res.status).to.equal(HTTPStatus.OK);
                     expect(res.body.item).to.be.an('object');
@@ -43,6 +93,9 @@ describe('Testes de Integração', () => {
 
             request(app)
                 .post(`/api/usuario/novo`)
+                .set('Content-Type', 'application/json')
+                .set('Accept', 'application/json')
+                .set('Authorization', `Bearer ${token}`)
                 .send(usuario)
                 .end((error, res) => {
                     expect(res.status).to.equal(HTTPStatus.OK);
@@ -65,6 +118,9 @@ describe('Testes de Integração', () => {
 
             request(app)
                 .post(`/api/usuario/atualizar`)
+                .set('Content-Type', 'application/json')
+                .set('Accept', 'application/json')
+                .set('Authorization', `Bearer ${token}`)
                 .send(usuario)
                 .end((error, res) => {
                     expect(res.status).to.equal(HTTPStatus.OK);
@@ -81,6 +137,9 @@ describe('Testes de Integração', () => {
         it('Deve deletar um usuário', done => {
             request(app)
                 .delete(`/api/usuario/${1}/deletar`)
+                .set('Content-Type', 'application/json')
+                .set('Accept', 'application/json')
+                .set('Authorization', `Bearer ${token}`)
                 .end((error, res) => {
                     expect(res.status).to.equal(HTTPStatus.OK);
                     done(error);

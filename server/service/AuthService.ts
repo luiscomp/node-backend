@@ -27,7 +27,6 @@ class AuthService {
 
             if(resultado.item) {
                 resultado.token = jwt.sign({ id: resultado.item.id }, config.secret, { expiresIn: '30m' });
-
                 res.status(HTTPStatus.OK).json(resultado);
             } else {
                 res.sendStatus(HTTPStatus.UNAUTHORIZED)
@@ -40,7 +39,6 @@ class AuthService {
 
             res.status(HTTPStatus.INTERNAL_SERVER_ERROR).json(resultado);
         }
-        
     }
 
 }
