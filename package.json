@@ -30,7 +30,6 @@
     "http": "0.0.0",
     "http-status": "^1.4.2",
     "jsonwebtoken": "^8.5.1",
-    "lodash": "^4.17.15",
     "log4js": "^6.1.1",
     "morgan": "^1.9.1",
     "passport": "^0.4.1",

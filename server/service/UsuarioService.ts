@@ -1,12 +1,10 @@
 import * as HTTPStatus from 'http-status';
 import { Response } from 'express';
-import * as _ from 'lodash';
 import { getLogger, Logger } from 'log4js';
 import UsuarioPersistence from '../persistence/UsuarioPersistence';
 import CodigosResposta from '../utils/CodigosResposta';
 import ObjetoResultado from '../model/ObjetoResultado';
 import Usuario from '../model/Usuario';
-import { onError } from '../api/responses/errorHandler'
 
 class UsuarioService {
 
@@ -28,13 +26,12 @@ class UsuarioService {
 
             
         } catch(error) {
-            _.partial(onError, res, 'Erro ao listar Usuários', error)
-            // this.logger.error(error);
+            this.logger.error(error);
 
-            // resultado.status = CodigosResposta[CodigosResposta.FALHA];
-            // resultado.mensagem = error;
+            resultado.status = CodigosResposta[CodigosResposta.FALHA];
+            resultado.mensagem = error;
 
-            // res.status(HTTPStatus.INTERNAL_SERVER_ERROR).json(resultado);
+            res.status(HTTPStatus.INTERNAL_SERVER_ERROR).json(resultado);
         }
     }
 

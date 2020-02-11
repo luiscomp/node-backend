@@ -18,6 +18,8 @@ class UsuarioPersistence {
     }
 
     listar(usuario: Usuario, pagina: Number): Promise<Array<Usuario>> {
+        throw new Error("ERRO GENERICO DE TESTE")
+
         return new Promise((resolve, reject) => {
             resolve(this.lista);
         })
