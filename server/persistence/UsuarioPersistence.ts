@@ -72,4 +72,4 @@ class UsuarioPersistence {
     }
 }
 
-export default UsuarioPersistence;
+export default new UsuarioPersistence();

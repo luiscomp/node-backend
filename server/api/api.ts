@@ -6,15 +6,13 @@ import * as morgan from 'morgan';
 import * as bodyParser from 'body-parser';
 import Routes from './routes/routes';
 import { configure, connectLogger, getLogger } from 'log4js';
-import AuthConfig from '../auth/authConfig';
+import Auth from '../auth/Auth';
 
 class Api {
     public express: Application;
-    public auth: any;
 
     constructor() {
         this.express = express();
-        this.auth = AuthConfig();
         this.configurarLogger();
         this.middleware();
     }
@@ -33,13 +31,13 @@ class Api {
         this.express.use(errorHandlerApi);
         this.express.use(corsConfig);
         this.express.use(connectLogger(getLogger("logger"), { level: "auto" }));
-        this.express.use(this.auth.initialize())
+        this.express.use(Auth.config().initialize())
         
-        this.router(this.express, this.auth);
+        this.router(this.express, Auth);
     }
 
     private router(app: Application, auth: any): void {
-        new Routes(app, auth);
+        Routes.initRoutes(app, auth);
     }
 }
 

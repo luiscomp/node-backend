@@ -2,6 +2,7 @@ import * as HTTPStatus from 'http-status';
 import * as jwt from 'jsonwebtoken';
 import { app, request, expect } from './config/helpers';
 import Usuario from '../../server/model/Usuario';
+import CodigosResposta from '../../server/utils/CodigosResposta';
 
 describe('Testes de Integração', () => {
 
@@ -108,6 +109,24 @@ describe('Testes de Integração', () => {
         });
     });
 
+    describe('POST /api/usuario/novo', () => {
+        it('Deve dar erro ao tentar gravar um usuário com os dados incompletos', done => {
+            const usuario: Usuario = new Usuario();
+
+            request(app)
+                .post(`/api/usuario/novo`)
+                .set('Content-Type', 'application/json')
+                .set('Accept', 'application/json')
+                .set('Authorization', `Bearer ${token}`)
+                .send(usuario)
+                .end((error, res) => {
+                    expect(res.status).to.equal(HTTPStatus.BAD_REQUEST);
+                    expect(res.body.status).to.be.equals(CodigosResposta[CodigosResposta.SCHEMA_INVALIDO]);
+                    done(error);
+                });
+        });
+    });
+
     describe('POST /api/usuario/atualizar', () => {
         it('Deve editar um usuário existente se passado com o id', done => {
             const usuario: Usuario = new Usuario();
@@ -128,6 +147,24 @@ describe('Testes de Integração', () => {
                     expect(res.body.item.nome).to.be.equals('Luis Eduardo Miranda');
                     expect(res.body.item.email).to.be.equals('novo@email.com');
                     expect(res.body.item.senha).to.be.equals('159487');
+                    done(error);
+                });
+        });
+    });
+
+    describe('POST /api/usuario/atualizar', () => {
+        it('Deve dar erro ao tentar atualizar um usuário sem id ou os dados obrigatórios', done => {
+            const usuario: Usuario = new Usuario();
+
+            request(app)
+                .post(`/api/usuario/atualizar`)
+                .set('Content-Type', 'application/json')
+                .set('Accept', 'application/json')
+                .set('Authorization', `Bearer ${token}`)
+                .send(usuario)
+                .end((error, res) => {
+                    expect(res.status).to.equal(HTTPStatus.BAD_REQUEST);
+                    expect(res.body.status).to.be.equals(CodigosResposta[CodigosResposta.SCHEMA_INVALIDO]);
                     done(error);
                 });
         });

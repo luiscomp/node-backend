@@ -14,4 +14,4 @@ class AuthRoutes {
     }
 }
 
-export default AuthRoutes;
+export default new AuthRoutes();

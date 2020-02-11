@@ -1,44 +1,47 @@
 import * as HTTPStatus from 'http-status';
 import { Response } from 'express';
+import * as _ from 'lodash';
 import { getLogger, Logger } from 'log4js';
 import UsuarioPersistence from '../persistence/UsuarioPersistence';
 import CodigosResposta from '../utils/CodigosResposta';
 import ObjetoResultado from '../model/ObjetoResultado';
 import Usuario from '../model/Usuario';
+import { onError } from '../api/responses/errorHandler'
 
 class UsuarioService {
 
-    private usuarioPersistence: UsuarioPersistence;
     private logger: Logger;
 
     constructor() {
-        this.usuarioPersistence = new UsuarioPersistence();
         this.logger = getLogger("logger");
     }
 
     async listar(usuario: Usuario, pagina: Number, res: Response) {
         let resultado: ObjetoResultado = new ObjetoResultado();
         try {
-            resultado.lista = await this.usuarioPersistence.listar(usuario, pagina);
-            resultado.quantidade = await this.usuarioPersistence.quantidade(usuario, pagina);
+            resultado.lista = await UsuarioPersistence.listar(usuario, pagina);
+            resultado.quantidade = await UsuarioPersistence.quantidade(usuario, pagina);
             resultado.status = CodigosResposta[CodigosResposta.SUCESSO];
             resultado.mensagem = 'Lista recuperada com sucesso';
 
             res.status(HTTPStatus.OK).json(resultado);
+
+            
         } catch(error) {
-            this.logger.error(error);
+            _.partial(onError, res, 'Erro ao listar Usuários', error)
+            // this.logger.error(error);
 
-            resultado.status = CodigosResposta[CodigosResposta.FALHA];
-            resultado.mensagem = error;
+            // resultado.status = CodigosResposta[CodigosResposta.FALHA];
+            // resultado.mensagem = error;
 
-            res.status(HTTPStatus.INTERNAL_SERVER_ERROR).json(resultado);
+            // res.status(HTTPStatus.INTERNAL_SERVER_ERROR).json(resultado);
         }
     }
 
     async recuperar(id: Number, res: Response) {
         let resultado: ObjetoResultado = new ObjetoResultado();
         try {
-            resultado.item = await this.usuarioPersistence.recuperar(id);
+            resultado.item = await UsuarioPersistence.recuperar(id);
             resultado.status = CodigosResposta[CodigosResposta.SUCESSO];
             resultado.mensagem = 'Usuário recuperado com sucesso';
 
@@ -56,7 +59,7 @@ class UsuarioService {
     async novo(usuario: Usuario, res: Response) {
         let resultado: ObjetoResultado = new ObjetoResultado();
         try {
-            resultado.item = await this.usuarioPersistence.novo(usuario);
+            resultado.item = await UsuarioPersistence.novo(usuario);
             resultado.status = CodigosResposta[CodigosResposta.SUCESSO];
             resultado.mensagem = 'Usuário gravado com sucesso';
 
@@ -74,7 +77,7 @@ class UsuarioService {
     async atualizar(usuario: Usuario, res: Response) {
         let resultado: ObjetoResultado = new ObjetoResultado();
         try {
-            resultado.item = await this.usuarioPersistence.atualizar(usuario);
+            resultado.item = await UsuarioPersistence.atualizar(usuario);
             resultado.status = CodigosResposta[CodigosResposta.SUCESSO];
             resultado.mensagem = 'Usuário atualizado com sucesso';
 
@@ -92,7 +95,7 @@ class UsuarioService {
     async deletar(id: Number, res: Response) {
         let resultado: ObjetoResultado = new ObjetoResultado();
         try {
-            resultado.item = await this.usuarioPersistence.deletar(id);
+            resultado.item = await UsuarioPersistence.deletar(id);
             resultado.status = CodigosResposta[CodigosResposta.SUCESSO];
             resultado.mensagem = 'Usuário deletado com sucesso';
 
@@ -108,4 +111,4 @@ class UsuarioService {
     }
 }
 
-export default UsuarioService;
+export default new UsuarioService();
