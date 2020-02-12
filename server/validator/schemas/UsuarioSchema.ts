@@ -1,5 +1,5 @@
 class UsuarioSchema {
-    public static gravar = {
+    public gravar = {
         type: 'object',
         required: [ 'nome', 'email', 'senha' ],
         properties: {
@@ -17,7 +17,7 @@ class UsuarioSchema {
         }
     }
 
-    public static atualizar = {
+    public atualizar = {
         type: 'object',
         required: [ 'id', 'nome', 'email', 'senha' ],
         properties: {
@@ -37,4 +37,4 @@ class UsuarioSchema {
     }
 }
 
-export default UsuarioSchema;
+export default new UsuarioSchema();

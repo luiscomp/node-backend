@@ -16,6 +16,21 @@ describe('Testes de Integração', () => {
     })
 
     describe('POST /api/auth/token ', () => {
+        it('Deve dar erro ao tentar autenticar sem informar login e/ou senha', done => {
+            const usuario: Usuario = new Usuario();
+
+            request(app)
+                .post('/api/auth/token')
+                .send(usuario)
+                .end((error, res) => {
+                    expect(res.status).to.equal(HTTPStatus.BAD_REQUEST);
+                    expect(res.body.status).to.be.equals(CodigosResposta[CodigosResposta.SCHEMA_INVALIDO]);
+                    done(error)
+                })
+        });
+    });
+
+    describe('POST /api/auth/token ', () => {
         it('Deve autenticar e receber um token de acesso', done => {
             const usuario: Usuario = new Usuario();
             usuario.email = 'luizeduardo354@gmail.com';

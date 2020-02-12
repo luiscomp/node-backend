@@ -69,7 +69,7 @@ describe('Testes Unitários do Controller', () => {
             const data = await UsuarioPersistence.quantidade(null, 1);
 
             expect(data).to.be.an('number');
-            expect(data).to.be.equals(1);
+            expect(data).to.be.equals(2);
         });
     });
 });

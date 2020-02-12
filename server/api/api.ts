@@ -1,12 +1,12 @@
 import * as express from 'express';
 import { Application } from 'express';
-import { errorHandlerApi } from './errorHandlerApi';
 import { corsConfig } from './corsConfig';
 import * as morgan from 'morgan';
 import * as bodyParser from 'body-parser';
 import Routes from './routes/routes';
 import { configure, connectLogger, getLogger } from 'log4js';
 import Auth from '../auth/Auth';
+import Handlers from './responses/Handlers';
 
 class Api {
     public express: Application;
@@ -28,7 +28,7 @@ class Api {
         this.express.use(morgan('dev'));
         this.express.use(bodyParser.urlencoded( { extended: true} ));
         this.express.use(bodyParser.json());
-        this.express.use(errorHandlerApi);
+        this.express.use(Handlers.errorHandlerApi);
         this.express.use(corsConfig);
         this.express.use(connectLogger(getLogger("logger"), { level: "auto" }));
         this.express.use(Auth.config().initialize())

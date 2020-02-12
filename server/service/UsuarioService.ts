@@ -1,18 +1,15 @@
 import * as HTTPStatus from 'http-status';
 import { Response } from 'express';
-import { getLogger, Logger } from 'log4js';
+import * as _ from 'lodash';
 import UsuarioPersistence from '../persistence/UsuarioPersistence';
 import CodigosResposta from '../utils/CodigosResposta';
 import ObjetoResultado from '../model/ObjetoResultado';
 import Usuario from '../model/Usuario';
+import Handlers from '../api/responses/Handlers';
 
 class UsuarioService {
 
-    private logger: Logger;
-
-    constructor() {
-        this.logger = getLogger("logger");
-    }
+    constructor() {}
 
     async listar(usuario: Usuario, pagina: Number, res: Response) {
         let resultado: ObjetoResultado = new ObjetoResultado();
@@ -23,15 +20,8 @@ class UsuarioService {
             resultado.mensagem = 'Lista recuperada com sucesso';
 
             res.status(HTTPStatus.OK).json(resultado);
-
-            
         } catch(error) {
-            this.logger.error(error);
-
-            resultado.status = CodigosResposta[CodigosResposta.FALHA];
-            resultado.mensagem = error;
-
-            res.status(HTTPStatus.INTERNAL_SERVER_ERROR).json(resultado);
+            _.partial(Handlers.onError, res, 'Erro ao listar Usuários')(error);
         }
     }
 
@@ -44,12 +34,7 @@ class UsuarioService {
 
             res.status(HTTPStatus.OK).json(resultado);
         } catch(error) {
-            this.logger.error(error);
-
-            resultado.status = CodigosResposta[CodigosResposta.FALHA];
-            resultado.mensagem = error;
-
-            res.status(HTTPStatus.INTERNAL_SERVER_ERROR).json(resultado);
+            _.partial(Handlers.onError, res, 'Erro ao recuperar Usuário')(error);
         }
     }
 
@@ -62,12 +47,7 @@ class UsuarioService {
 
             res.status(HTTPStatus.OK).json(resultado);
         } catch(error) {
-            this.logger.error(error);
-
-            resultado.status = CodigosResposta[CodigosResposta.FALHA];
-            resultado.mensagem = error;
-
-            res.status(HTTPStatus.INTERNAL_SERVER_ERROR).json(resultado);
+            _.partial(Handlers.onError, res, 'Erro ao criar novo Usuário')(error);
         }
     }
 
@@ -80,12 +60,7 @@ class UsuarioService {
 
             res.status(HTTPStatus.OK).json(resultado);
         } catch(error) {
-            this.logger.error(error);
-
-            resultado.status = CodigosResposta[CodigosResposta.FALHA];
-            resultado.mensagem = error;
-
-            res.status(HTTPStatus.INTERNAL_SERVER_ERROR).json(resultado);
+            _.partial(Handlers.onError, res, 'Erro ao atualizar Usuário')(error);
         }
     }
 
@@ -98,12 +73,7 @@ class UsuarioService {
 
             res.status(HTTPStatus.OK).json(resultado);
         } catch(error) {
-            this.logger.error(error);
-
-            resultado.status = CodigosResposta[CodigosResposta.FALHA];
-            resultado.mensagem = error;
-
-            res.status(HTTPStatus.INTERNAL_SERVER_ERROR).json(resultado);
+            _.partial(Handlers.onError, res, 'Erro ao deletar Usuário')(error);
         }
     }
 }
