@@ -1,13 +1,13 @@
 import { IObjetoResultado } from "./types/IObjetoResultado";
 
 class ObjetoResultado implements IObjetoResultado {
-    status: String;    
-    mensagem: String;
-    erros?: Array<String>;
+    status: string;    
+    mensagem: string;
+    erros?: Array<string>;
     item?: any;
     lista?: any[];
-    quantidade?: Number;
-    token?: String;
+    quantidade?: number;
+    token?: string;
 
     constructor() {}
 }

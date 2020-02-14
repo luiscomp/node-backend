@@ -1,12 +1,10 @@
 module.exports = {
-    env: 'development',
-    db: 'ts-api',
-    dialect: 'postgres',
-    username: 'postgres',
-    password: '123456',
-    host: 'localhost',
+    env: 'production',
+    dbHost: "glassfish40dev.tre-pi.gov.br",
+    dbPort: "3306",
+    dbUser: "sedesc",
+    dbPassword: "secreto9",
+    dataBase: "gestcom_trepi",
     serverPort: 3000,
-    pgPort: 5432,
-    dbURL: 'postgres://postgres:pgroot@localhost:5432/ts-api',
     secret: 'local@dev'
 }

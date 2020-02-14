@@ -11,7 +11,7 @@ class UsuarioService {
 
     constructor() {}
 
-    async listar(usuario: Usuario, pagina: Number, res: Response) {
+    async listar(usuario: Usuario, pagina: number, res: Response) {
         let resultado: ObjetoResultado = new ObjetoResultado();
         try {
             resultado.lista = await UsuarioPersistence.listar(usuario, pagina);
@@ -25,7 +25,7 @@ class UsuarioService {
         }
     }
 
-    async recuperar(id: Number, res: Response) {
+    async recuperar(id: number, res: Response) {
         let resultado: ObjetoResultado = new ObjetoResultado();
         try {
             resultado.item = await UsuarioPersistence.recuperar(id);
@@ -64,7 +64,7 @@ class UsuarioService {
         }
     }
 
-    async deletar(id: Number, res: Response) {
+    async deletar(id: number, res: Response) {
         let resultado: ObjetoResultado = new ObjetoResultado();
         try {
             resultado.item = await UsuarioPersistence.deletar(id);

@@ -1,5 +1,5 @@
 class Constantes {
-    public static readonly TAM_MAX_PAGINACAO = 10;
+    public readonly TAM_MAX_PAGINACAO = 10;
 }
 
-export default Constantes;
+export default new Constantes();

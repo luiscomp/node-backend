@@ -1,73 +1,107 @@
 import Usuario from "../model/Usuario";
+import Persistence from './Persistence'
+import Constantes from '../utils/Constantes';
+
+const CAMPOS = `usuario.id, usuario.nome, usuario.email, usuario.senha`;
+const SELECT = `SELECT ${CAMPOS} FROM usuario`;
+const SELECT_COUNT = `SELECT COUNT(*) AS quantidade FROM usuario`;
+const INSERT = `INSERT INTO usuario (nome, email, senha) VALUES ( ? , ? , ? )`;
+const UPDATE = `UPDATE usuario SET nome = ?, email = ?, senha = ? WHERE id = ?`;
+const DELETE = `DELETE FROM usuario WHERE id = ? `;
 
 class UsuarioPersistence {
-    private lista: Array<Usuario>;
+    
+    constructor() {}
 
-    constructor() {
-        this.lista = [{
-            id: 1,
-            nome: 'Luis Eduardo',
-            email: 'luizeduardo354@gmail.com',
-            senha: '123456'
-        },{
-            id: 2,
-            nome: 'Thays Ferreira',
-            email: 'thaysferreira@gmail.com',
-            senha: '654321'
-        }]
-    }
+    listar(usuario: Usuario, pagina: number): Promise<Array<Usuario>> {
+        return new Promise(async (resolve, reject) => {
+            let results: Array<Usuario>;
+            let sql: string = SELECT;
+            let parametros: Array<any>;
 
-    listar(usuario: Usuario, pagina: Number): Promise<Array<Usuario>> {
-        return new Promise((resolve, reject) => {
-            resolve(this.lista);
+            try {
+                if(!isNaN(pagina) && pagina >= 0) {
+                    sql = sql.concat(` LIMIT ${pagina * Constantes.TAM_MAX_PAGINACAO}, ${Constantes.TAM_MAX_PAGINACAO}`);
+                }
+
+                results = await Persistence.conexao().query(sql);
+                resolve(results);
+            } catch (error) {
+                reject(error.sqlMessage);
+            }
         })
     }
 
-    quantidade(usuario: Usuario, pagina: Number): Promise<Number> {
-        return new Promise((resolve, reject) => {
-            resolve(this.lista.length);
+    quantidade(usuario: Usuario, pagina: number): Promise<number> {
+        return new Promise(async (resolve, reject) => {
+            let results: Array<any>;
+            try {
+                results = await Persistence.conexao().query(SELECT_COUNT);
+                resolve(results[0].quantidade);
+            } catch (error) {
+                reject(error.sqlMessage);
+            }
         })
     }
 
-    recuperar(id: Number): Promise<Usuario> {
-        return new Promise((resolve, reject) => {
-            let usuario: Usuario = this.lista.filter(u => {
-                if(u.id === id) return u;
-            }).pop();
-            
-            resolve(usuario);
+    recuperar(id: number): Promise<Usuario> {
+        return new Promise(async (resolve, reject) => {
+            let results: Array<Usuario>;
+            let sql: string = SELECT;
+            try {
+                sql = Persistence.incluirClausulaNoWhereAND(sql, ' id = ? ');
+
+                results = await Persistence.conexao().query(sql, id);
+                resolve(results[0]);
+            } catch(error) {
+                reject(error.sqlMessage);
+            }
         })
     }
 
     novo(usuario: Usuario): Promise<Usuario> {
-        return new Promise((resolve, reject) => {
-            usuario.id = this.lista.length + 1;
-            this.lista.push(usuario);
-
-            resolve(usuario);
+        return new Promise(async (resolve, reject) => {
+            let results: any;
+            let parametros = [
+                usuario.nome,
+                usuario.email,
+                usuario.senha,
+            ]
+            try {
+                results = await Persistence.conexao().query(INSERT, parametros);
+                usuario.id = results.insertId;
+                resolve(usuario);
+             } catch(error) {
+                reject(error.sqlMessage);
+            }
         })
     }
     
     atualizar(usuario: Usuario): Promise<Usuario> {
-        return new Promise((resolve, reject) => {
-            this.lista = this.lista.map(u => {
-                if(u.id === usuario.id) {
-                    return usuario;
-                }
-                return u;
-            });
-            
-            resolve(usuario);
+        return new Promise(async (resolve, reject) => {
+            let parametros = [
+                usuario.nome,
+                usuario.email,
+                usuario.senha,
+                usuario.id
+            ]
+            try {
+                await Persistence.conexao().query(UPDATE, parametros);
+                resolve(usuario);
+             } catch(error) {
+                reject(error.sqlMessage);
+            }
         })
     }
 
-    deletar(id: Number): Promise<void> {
-        return new Promise((resolve, reject) => {
-            this.lista = this.lista.filter(u => {
-                if(u.id !== id) return u;
-            });
-            
-            resolve();
+    deletar(id: number): Promise<void> {
+        return new Promise(async (resolve, reject) => {
+            try {
+                await Persistence.conexao().query(DELETE, id);
+                resolve();
+             } catch(error) {
+                reject(error.sqlMessage);
+            }
         })
     }
 }
