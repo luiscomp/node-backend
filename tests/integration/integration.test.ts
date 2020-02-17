@@ -3,6 +3,8 @@ import * as jwt from 'jsonwebtoken';
 import { app, request, expect } from './config/helpers';
 import Usuario from '../../server/model/Usuario';
 import CodigosResposta from '../../server/utils/CodigosResposta';
+import UsuarioPersistence from '../../server/persistence/UsuarioPersistence'
+import TestPersistence from '../../server/persistence/TestPersistence';
 
 describe('Testes de Integração', () => {
 
@@ -10,9 +12,21 @@ describe('Testes de Integração', () => {
     const config = require('../../server/config/config')();
     let token: String;
 
+
+    const usuario: Usuario = {
+        id: 1,
+        nome: 'Usuario Padrão',
+        email: 'padrao@email.com',
+        senha: '156489'
+    }
+
     beforeEach((done) => {
-        token = jwt.sign({ id: 1 }, config.secret, { expiresIn: '30m' });
-        done();
+        TestPersistence.limparSchema().then(() => {
+            UsuarioPersistence.novo(usuario).then(() => {
+                token = jwt.sign({ id: 1 }, config.secret, { expiresIn: '30m' });
+                done();
+            })
+        });
     })
 
     describe('POST /api/auth/token ', () => {
@@ -92,9 +106,9 @@ describe('Testes de Integração', () => {
                 .end((error, res) => {
                     expect(res.status).to.equal(HTTPStatus.OK);
                     expect(res.body.item).to.be.an('object');
-                    expect(res.body.item.nome).to.be.equals('Luis Eduardo');
-                    expect(res.body.item.email).to.be.equals('luizeduardo354@gmail.com');
-                    expect(res.body.item.senha).to.be.equals('123456');
+                    expect(res.body.item.nome).to.be.equals('Usuario Padrão');
+                    expect(res.body.item.email).to.be.equals('padrao@email.com');
+                    expect(res.body.item.senha).to.be.equals('156489');
                     done(error);
                 });
         });

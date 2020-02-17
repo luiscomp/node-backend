@@ -13,18 +13,41 @@ class UsuarioPersistence {
     
     constructor() {}
 
+    incluirFiltros(sql: string, usuario: Usuario) {
+        Object.keys(usuario).map(attr => {
+            if(usuario[attr] !== null && usuario[attr] !== undefined) {
+                sql = Persistence.incluirClausulaNoWhereAND(sql, `${attr} = ?`);
+            }
+        });
+
+        return sql;
+    }
+
+    montarParametros(usuario: Usuario) {
+        let parametros: Array<any> = new Array<any>();
+
+        Object.keys(usuario).map(attr => {
+            if(usuario[attr] !== null && usuario[attr] !== undefined) {
+                parametros.push(usuario[attr]);
+            }
+        });
+
+        return parametros;
+    }
+
     listar(usuario: Usuario, pagina: number): Promise<Array<Usuario>> {
         return new Promise(async (resolve, reject) => {
             let results: Array<Usuario>;
             let sql: string = SELECT;
-            let parametros: Array<any>;
+
+            sql = this.incluirFiltros(sql, usuario)
 
             try {
                 if(!isNaN(pagina) && pagina >= 0) {
-                    sql = sql.concat(` LIMIT ${pagina * Constantes.TAM_MAX_PAGINACAO}, ${Constantes.TAM_MAX_PAGINACAO}`);
+                    sql = sql.concat(` LIMIT ${pagina * Constantes.TAM_MAX_PAGINACAO}, ${Constantes.TAM_MAX_PAGINACAO} `);
                 }
 
-                results = await Persistence.conexao().query(sql);
+                results = await Persistence.conexao().query(sql, this.montarParametros(usuario));
                 resolve(results);
             } catch (error) {
                 reject(error.sqlMessage);
@@ -70,8 +93,9 @@ class UsuarioPersistence {
             try {
                 results = await Persistence.conexao().query(INSERT, parametros);
                 usuario.id = results.insertId;
+
                 resolve(usuario);
-             } catch(error) {
+            } catch(error) {
                 reject(error.sqlMessage);
             }
         })

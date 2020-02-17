@@ -15,7 +15,6 @@ describe('Testes Unitários do Controller', () => {
     beforeEach((done) => {
         TestPersistence.limparSchema().then(() => {
             UsuarioPersistence.novo(usuario).then(() => {
-                // console.log("Usuário padrão criado");
                 done();
             })
         });
@@ -24,7 +23,7 @@ describe('Testes Unitários do Controller', () => {
 
     describe('Método listar()', () => {
         it('Deve retornar uma lista com todos os usuários', async () => {
-            const data = await UsuarioPersistence.listar(null, -1);
+            const data = await UsuarioPersistence.listar(usuario, -1);
             expect(data).to.be.an('array');
             expect(data[0]).to.have.keys(['id', 'nome', 'email', 'senha']);
         });
@@ -32,7 +31,7 @@ describe('Testes Unitários do Controller', () => {
 
     describe('Método quantidade()', () => {
         it('Deve retornar a quantidade de usuários de acordo com o filtro passado', async () => {
-            const data = await UsuarioPersistence.quantidade(null, -1);
+            const data = await UsuarioPersistence.quantidade(new Usuario(), -1);
             expect(data).to.be.an('number');
             expect(data).to.be.equals(1);
         });

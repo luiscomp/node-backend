@@ -13,7 +13,7 @@ var poolDeConexao = mysql.createPool({
 });
 
 poolDeConexao.getConnection((error, connection) => {
-    console.log('CRIANDO CONEXÃO NO POOL');
+    // console.log('CRIANDO CONEXÃO NO POOL');
     
     if(error) {
         if(error.code === 'PROTOCOL_CONNECTION_LOST') {
@@ -27,7 +27,7 @@ poolDeConexao.getConnection((error, connection) => {
         }
     }
     if(connection) {
-        console.log('LIBERANDO CONEXÃO NO POOL');
+        // console.log('LIBERANDO CONEXÃO NO POOL');
         connection.release();
     }
     return;
