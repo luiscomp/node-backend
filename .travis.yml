@@ -1,0 +1,23 @@
+sudo: required
+language: node_js
+notifications:
+  email: luizeduardo354@gmail.com
+node_js:
+- 12.14.0
+services:
+- mysql
+env:
+  global:
+  - NODE_ENV: test
+  - TRAVIS: true
+addons:
+  mysql: '5.5.56'
+before_script:
+  - mysql -u root --password="" < tests/db/estudo_test.sql
+  - npm i -g gulp-cli@2.2.0
+  - cd server/
+  - npm install
+  - gulp
+script:
+- npm run u-test
+- npm run i-test
