@@ -16,6 +16,11 @@ before_script:
   - npm i -g gulp-cli
   - npm install
   - gulp
-script:
-- npm run u-test
-- npm run i-test
+script: echo "Executanto tarefa..."
+jobs:
+  include:
+    - stage: "Testes Unitários"
+      script: npm run u-test
+    - stage: "Testes de Integração"
+      script: npm run i-test
+    
