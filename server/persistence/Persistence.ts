@@ -13,8 +13,6 @@ var poolDeConexao = mysql.createPool({
 });
 
 poolDeConexao.getConnection((error, connection) => {
-    // console.log('CRIANDO CONEXÃO NO POOL');
-    
     if(error) {
         if(error.code === 'PROTOCOL_CONNECTION_LOST') {
             console.error('Database connection was closed.');
@@ -27,7 +25,6 @@ poolDeConexao.getConnection((error, connection) => {
         }
     }
     if(connection) {
-        // console.log('LIBERANDO CONEXÃO NO POOL');
         connection.release();
     }
     return;
@@ -38,6 +35,28 @@ poolDeConexao.query = util.promisify(poolDeConexao.query);
 class Persistence {
     conexao() {
         return poolDeConexao;
+    }
+
+    incluirFiltros(sql: string, obj: any) {
+        Object.keys(obj).map(attr => {
+            if(obj[attr] !== null && obj[attr] !== undefined) {
+                sql = this.incluirClausulaNoWhereAND(sql, `${attr} = ?`);
+            }
+        });
+
+        return sql;
+    }
+
+    montarParametros(obj: any) {
+        let parametros: Array<any> = new Array<any>();
+
+        Object.keys(obj).map(attr => {
+            if(obj[attr] !== null && obj[attr] !== undefined) {
+                parametros.push(obj[attr]);
+            }
+        });
+
+        return parametros;
     }
 
     incluirClausulaNoWhereAND(sqlQuery: string, clausula: string): string {
@@ -60,4 +79,4 @@ class Persistence {
     }
 }
 
-export default new Persistence();
+export default Persistence;

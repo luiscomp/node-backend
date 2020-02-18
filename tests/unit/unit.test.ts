@@ -20,6 +20,8 @@ describe('Testes Unitários do Controller', () => {
         });
     })
 
+    
+
 
     describe('Método listar()', () => {
         it('Deve retornar uma lista com todos os usuários', async () => {
@@ -31,7 +33,7 @@ describe('Testes Unitários do Controller', () => {
 
     describe('Método quantidade()', () => {
         it('Deve retornar a quantidade de usuários de acordo com o filtro passado', async () => {
-            const data = await UsuarioPersistence.quantidade(new Usuario(), -1);
+            const data = await UsuarioPersistence.quantidade(usuario, -1);
             expect(data).to.be.an('number');
             expect(data).to.be.equals(1);
         });
@@ -60,13 +62,12 @@ describe('Testes Unitários do Controller', () => {
 
     describe('Método atualizar()', () => {
         it('Deve atualizar o usuário padrão', async () =>{
-            const usuario: Usuario = new Usuario();
-            usuario.id = 1;
-            usuario.nome = 'Luis Eduardo Miranda';
-            usuario.email = 'novo@email.com';
-            usuario.senha = '159487'
+            const usuario2: Usuario = { ...usuario }
+            usuario2.nome = 'Luis Eduardo Miranda';
+            usuario2.email = 'novo@email.com';
+            usuario2.senha = '159487'
 
-            await UsuarioPersistence.atualizar(usuario);
+            await UsuarioPersistence.atualizar(usuario2);
             const data: Usuario = await UsuarioPersistence.recuperar(1);
 
             expect(data).to.be.an('object');
@@ -78,8 +79,8 @@ describe('Testes Unitários do Controller', () => {
 
     describe('Método deletar()', () => {
         it('Deve deletar um usuário', async () =>{
-            await UsuarioPersistence.deletar(1);
-            const data = await UsuarioPersistence.quantidade(null, 1);
+            await UsuarioPersistence.deletar(usuario.id);
+            const data = await UsuarioPersistence.quantidade(new Usuario());
 
             expect(data).to.be.an('number');
             expect(data).to.be.equals(0);

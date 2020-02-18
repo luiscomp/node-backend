@@ -15,7 +15,7 @@ class UsuarioService {
         let resultado: ObjetoResultado = new ObjetoResultado();
         try {
             resultado.lista = await UsuarioPersistence.listar(usuario, pagina);
-            resultado.quantidade = await UsuarioPersistence.quantidade(usuario, pagina);
+            resultado.quantidade = await UsuarioPersistence.quantidade(usuario);
             resultado.status = CodigosResposta[CodigosResposta.SUCESSO];
             resultado.mensagem = 'Lista recuperada com sucesso';
 

@@ -9,30 +9,10 @@ const INSERT = `INSERT INTO usuario (nome, email, senha) VALUES ( ? , ? , ? )`;
 const UPDATE = `UPDATE usuario SET nome = ?, email = ?, senha = ? WHERE id = ?`;
 const DELETE = `DELETE FROM usuario WHERE id = ? `;
 
-class UsuarioPersistence {
+class UsuarioPersistence extends Persistence {
     
-    constructor() {}
-
-    incluirFiltros(sql: string, usuario: Usuario) {
-        Object.keys(usuario).map(attr => {
-            if(usuario[attr] !== null && usuario[attr] !== undefined) {
-                sql = Persistence.incluirClausulaNoWhereAND(sql, `${attr} = ?`);
-            }
-        });
-
-        return sql;
-    }
-
-    montarParametros(usuario: Usuario) {
-        let parametros: Array<any> = new Array<any>();
-
-        Object.keys(usuario).map(attr => {
-            if(usuario[attr] !== null && usuario[attr] !== undefined) {
-                parametros.push(usuario[attr]);
-            }
-        });
-
-        return parametros;
+    constructor() {
+        super();
     }
 
     listar(usuario: Usuario, pagina: number): Promise<Array<Usuario>> {
@@ -47,7 +27,7 @@ class UsuarioPersistence {
                     sql = sql.concat(` LIMIT ${pagina * Constantes.TAM_MAX_PAGINACAO}, ${Constantes.TAM_MAX_PAGINACAO} `);
                 }
 
-                results = await Persistence.conexao().query(sql, this.montarParametros(usuario));
+                results = await this.conexao().query(sql, this.montarParametros(usuario));
                 resolve(results);
             } catch (error) {
                 reject(error.sqlMessage);
@@ -55,11 +35,15 @@ class UsuarioPersistence {
         })
     }
 
-    quantidade(usuario: Usuario, pagina: number): Promise<number> {
+    quantidade(usuario: Usuario): Promise<number> {
         return new Promise(async (resolve, reject) => {
             let results: Array<any>;
+            let sql: string = SELECT_COUNT;
+
+            sql = this.incluirFiltros(sql, usuario)
+
             try {
-                results = await Persistence.conexao().query(SELECT_COUNT);
+                results = await this.conexao().query(sql, this.montarParametros(usuario));
                 resolve(results[0].quantidade);
             } catch (error) {
                 reject(error.sqlMessage);
@@ -72,9 +56,9 @@ class UsuarioPersistence {
             let results: Array<Usuario>;
             let sql: string = SELECT;
             try {
-                sql = Persistence.incluirClausulaNoWhereAND(sql, ' id = ? ');
+                sql = this.incluirClausulaNoWhereAND(sql, ' id = ? ');
 
-                results = await Persistence.conexao().query(sql, id);
+                results = await this.conexao().query(sql, id);
                 resolve(results[0]);
             } catch(error) {
                 reject(error.sqlMessage);
@@ -91,7 +75,7 @@ class UsuarioPersistence {
                 usuario.senha,
             ]
             try {
-                results = await Persistence.conexao().query(INSERT, parametros);
+                results = await this.conexao().query(INSERT, parametros);
                 usuario.id = results.insertId;
 
                 resolve(usuario);
@@ -110,7 +94,7 @@ class UsuarioPersistence {
                 usuario.id
             ]
             try {
-                await Persistence.conexao().query(UPDATE, parametros);
+                await this.conexao().query(UPDATE, parametros);
                 resolve(usuario);
              } catch(error) {
                 reject(error.sqlMessage);
@@ -121,7 +105,7 @@ class UsuarioPersistence {
     deletar(id: number): Promise<void> {
         return new Promise(async (resolve, reject) => {
             try {
-                await Persistence.conexao().query(DELETE, id);
+                await this.conexao().query(DELETE, id);
                 resolve();
              } catch(error) {
                 reject(error.sqlMessage);
