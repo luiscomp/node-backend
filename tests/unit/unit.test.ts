@@ -3,7 +3,7 @@ import UsuarioPersistence from '../../server/persistence/UsuarioPersistence'
 import TestPersistence from '../../server/persistence/TestPersistence';
 import Usuario from '../../server/model/Usuario';
 
-describe('Testes Unitários do Controller', () => {
+describe('Testes Unitários de Persistência', () => {
 
     const usuario: Usuario = {
         id: 1,
@@ -20,8 +20,9 @@ describe('Testes Unitários do Controller', () => {
         });
     })
 
-    
-
+    after(() => {
+        process.exit();
+    })
 
     describe('Método listar()', () => {
         it('Deve retornar uma lista com todos os usuários', async () => {
@@ -38,7 +39,6 @@ describe('Testes Unitários do Controller', () => {
             expect(data).to.be.equals(1);
         });
     });
-
 
     describe('Método recuperar()', () => {
         it('Deve retornar um objeto do tipo Usuario', async () => {
