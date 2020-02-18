@@ -21,7 +21,7 @@ describe('Testes Unitários de Persistência', () => {
     })
 
     after(() => {
-        process.exit();
+        // process.exit();
     })
 
     describe('Método listar()', () => {
