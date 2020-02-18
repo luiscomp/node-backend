@@ -33,7 +33,7 @@ describe('Testes Unitários do Controller', () => {
 
     describe('Método quantidade()', () => {
         it('Deve retornar a quantidade de usuários de acordo com o filtro passado', async () => {
-            const data = await UsuarioPersistence.quantidade(usuario, -1);
+            const data = await UsuarioPersistence.quantidade(usuario);
             expect(data).to.be.an('number');
             expect(data).to.be.equals(1);
         });

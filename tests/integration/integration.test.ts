@@ -91,6 +91,7 @@ describe('Testes de Integração', () => {
                     expect(res.status).to.equal(HTTPStatus.OK);
                     expect(res.body.lista).to.be.an('array')
                     expect(res.body.lista[0]).to.have.keys(['id', 'nome', 'email', 'senha'])
+                    expect(res.body.quantidade).to.be.equal(1)
                     done(error);
                 });
         });
