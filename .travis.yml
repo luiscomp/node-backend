@@ -14,7 +14,7 @@ addons:
   mysql: '5.5.56'
 before_script:
   - mysql -u root --password="" < tests/db/estudo_test.sql
-  - npm i -g gulp-cli
+  - npm i -g gulp-cli gulp
   - npm install
   - gulp
 script:
