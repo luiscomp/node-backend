@@ -14,7 +14,8 @@ addons:
   mysql: '5.5.56'
 before_script:
   - mysql -u root < tests/db/estudo_test.sql
-  - mysql -u root -e "select Host, User, Password from mysql.user;";
+  - mysql -u root -e "CREATE USER 'tester'@'localhost' IDENTIFIED BY 'local@test';";
+  - mysql -u root -e "GRANT ALL PRIVILEGES ON estudo_test.* TO 'tester'@'localhost';";
   - npm i -g gulp-cli
   - npm install
   - gulp
