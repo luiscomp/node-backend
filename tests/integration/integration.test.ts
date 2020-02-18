@@ -30,7 +30,7 @@ describe('Testes de Integração', () => {
     })
 
     after(() => {
-        // process.exit();
+        process.exit();
     })
 
     describe('POST /api/auth/token ', () => {

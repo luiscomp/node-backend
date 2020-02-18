@@ -96,7 +96,7 @@ class UsuarioPersistence extends Persistence {
             try {
                 await this.conexao().query(UPDATE, parametros);
                 resolve(usuario);
-             } catch(error) {
+            } catch(error) {
                 reject(error.sqlMessage);
             }
         })
@@ -107,7 +107,7 @@ class UsuarioPersistence extends Persistence {
             try {
                 await this.conexao().query(DELETE, id);
                 resolve();
-             } catch(error) {
+            } catch(error) {
                 reject(error.sqlMessage);
             }
         })
