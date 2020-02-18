@@ -1,9 +1,9 @@
 module.exports = {
     env: 'test',
-    dbHost: "glassfish40dev.tre-pi.gov.br",
+    dbHost: "localhost",
     dbPort: "3306",
-    dbUser: "sedesc",
-    dbPassword: "secreto9",
+    dbUser: "root",
+    dbPassword: "local@dev",
     dataBase: "estudo_test",
     serverPort: 3000,
     secret: 'local@dev'
