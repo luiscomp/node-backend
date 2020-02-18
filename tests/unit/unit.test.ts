@@ -20,15 +20,11 @@ describe('Testes Unitários de Persistência', () => {
         });
     })
 
-    after(() => {
-        process.exit();
-    })
-
     describe('Método listar()', () => {
         it('Deve retornar uma lista com todos os usuários', async () => {
             const data = await UsuarioPersistence.listar(usuario, -1);
             expect(data).to.be.an('array');
-            expect(data[0]).to.have.keys(['id', 'nome', 'email', 'senha1']);
+            expect(data[0]).to.have.keys(['id', 'nome', 'email', 'senha']);
         });
     });
 

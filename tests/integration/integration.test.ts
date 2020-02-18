@@ -29,10 +29,6 @@ describe('Testes de Integração', () => {
         });
     })
 
-    after(() => {
-        process.exit();
-    })
-
     describe('POST /api/auth/token ', () => {
         it('Deve dar erro ao tentar autenticar sem informar login e/ou senha', done => {
             const usuario: Usuario = new Usuario();
