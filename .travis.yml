@@ -16,7 +16,6 @@ before_script:
   - mysql -u root --password="" < tests/db/estudo_test.sql
   - npm i -g gulp-cli
   - npm install
-  - ls -l
   - gulp
 script:
 - npm run u-test
