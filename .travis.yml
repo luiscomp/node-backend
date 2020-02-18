@@ -13,7 +13,7 @@ env:
 addons:
   mysql: '5.5.56'
 before_script:
-  - mysql -u root --password="local@dev" < tests/db/estudo_test.sql
+  - mysql -u root < tests/db/estudo_test.sql
   - npm i -g gulp-cli
   - npm install
   - gulp
