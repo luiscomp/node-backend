@@ -19,8 +19,8 @@ before_script:
 script: echo "Executanto tarefa..."
 jobs:
   include:
-    - stage: "Testes Unitários"
+    - stage: "Testes Unitarios"
       script: npm run u-test
-    - stage: "Testes de Integração"
+    - stage: "Testes de Integracao"
       script: npm run i-test
     
