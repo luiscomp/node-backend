@@ -10,8 +10,6 @@ env:
   global:
   - NODE_ENV: test
   - TRAVIS: true
-addons:
-  mysql: '5.5.56'
 before_script:
   - mysql -u root < tests/db/estudo_test.sql
   - mysql -u root -e "CREATE USER 'tester'@'localhost' IDENTIFIED BY 'local@test';";
