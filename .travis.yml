@@ -14,7 +14,7 @@ addons:
   sonarcloud:
     organization: "luiscomp"
     token:
-      secure: "travis encrypt e9f44b1380601a9df3d3281381a7c27aabc3000d"
+      secure: "e9f44b1380601a9df3d3281381a7c27aabc3000d"
 before_script:
   - mysql -u root < tests/db/estudo_test.sql
   - mysql -u root -e "CREATE USER 'tester'@'localhost' IDENTIFIED BY 'local@test';";
