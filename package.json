@@ -4,7 +4,7 @@
   "description": "Código base para APIs com TypeScript",
   "main": "server/server.ts",
   "scripts": {
-    "start": "cross-env NODE_ENV=development ./node_modules/.bin/ts-node ./server/server.ts",
+    "start": "cross-env NODE_ENV=development ts-node ./server/server.ts",
     "builded": "cross-env NODE_ENV=production node ./dist/server/server.js",
     "u-test": "cross-env NODE_ENV=test mocha --opts ./dist/tests/unit/config/mocha.opts ./dist/tests/unit/unit.test.js --exit",
     "i-test": "cross-env NODE_ENV=test mocha --opts ./dist/tests/integration/config/mocha.opts ./dist/tests/integration/integration.test.js --exit",

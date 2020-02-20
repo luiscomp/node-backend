@@ -1,3 +1,4 @@
+dist: trusty
 language: node_js
 notifications:
   email: luizeduardo354@gmail.com
@@ -9,6 +10,11 @@ env:
   global:
   - NODE_ENV: test
   - TRAVIS: true
+addons:
+  sonarcloud:
+    organization: "luiscomp"
+    token:
+      secure: travis encrypt e9f44b1380601a9df3d3281381a7c27aabc3000d
 before_script:
   - mysql -u root < tests/db/estudo_test.sql
   - mysql -u root -e "CREATE USER 'tester'@'localhost' IDENTIFIED BY 'local@test';";
@@ -23,4 +29,6 @@ jobs:
       script: npm run u-test
     - stage: "Testes de Integracao"
       script: npm run i-test
+    - stage: "Sonar scanner"
+      script: sonar-scanner
     
