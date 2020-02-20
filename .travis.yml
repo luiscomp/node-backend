@@ -25,10 +25,6 @@ before_script:
 script: echo "Executanto tarefa..."
 jobs:
   include:
-    - stage: "Testes Unitarios"
-      script: npm run u-test
-    - stage: "Testes de Integracao"
-      script: npm run i-test
     - stage: "Sonar Scanner"
       script: sonar-scanner
     
