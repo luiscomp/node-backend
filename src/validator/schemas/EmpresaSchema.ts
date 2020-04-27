@@ -1,4 +1,32 @@
 class EmpresaSchema {
+    public autenticacao = {
+        $id: 'empresa.autenticacao',
+        type: 'object',
+        required: [ 'codigo' ],
+        properties: {
+            codigo: { type: 'string', default: null },
+        },
+        errorMessage: {
+            required: {
+                codigo: "O atributo 'Empresa.codigo' deve ser informado"
+            }
+        }
+    }
+
+    public gravarRelacionamento = {
+        $id: 'empresa.gravarRelacionamento',
+        type: 'object',
+        required: [ 'id' ],
+        properties: {
+            id: { type: 'string', default: null }
+        },
+        errorMessage: {
+            required: {
+                id: "O atributo 'Empresa.id' deve ser informado",
+            }
+        }
+    }
+
     public gravar = {
         $id: 'empresa.gravar',
         type: 'object',
@@ -15,14 +43,14 @@ class EmpresaSchema {
         },
         errorMessage: {
             required: {
-                codigo: "O atributo 'codigo' deve ser informado",
-                proprietario: "O atributo 'proprietario' deve ser informado",
-                cpfCnpj: "O atributo 'cpfCnpj' deve ser informado",
-                nomeEmpresarial: "O atributo 'nomeEmpresarial' deve ser informado",
-                nomeFantasia: "O atributo 'nomeFantasia' deve ser informado"
+                codigo: "O atributo 'Empresa.codigo' deve ser informado",
+                proprietario: "O atributo 'Empresa.proprietario' deve ser informado",
+                cpfCnpj: "O atributo 'Empresa.cpfCnpj' deve ser informado",
+                nomeEmpresarial: "O atributo 'Empresa.nomeEmpresarial' deve ser informado",
+                nomeFantasia: "O atributo 'Empresa.nomeFantasia' deve ser informado"
             }
         }
     }
 }
 
-export default EmpresaSchema;
+export default new EmpresaSchema();

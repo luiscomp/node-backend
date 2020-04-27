@@ -65,9 +65,9 @@ class UsuarioPersistence extends PersistenceUtils {
 
                 let usuario = new Usuario();
                 usuario = { 
-                    ...results[0]['Usuario'], 
+                    ...results[0]['Usuario'],
                     empresa: { 
-                        ...results[0]['Empresa'] 
+                        ...results[0]['Empresa']
                     } 
                 };
 

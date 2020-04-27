@@ -1,20 +1,25 @@
+import EmpresaSchema from "./EmpresaSchema";
+
 class AuthSchema {
-    public autenticar = {
-        $id: 'Autenticar',
+    public usuario = {
+        $id: 'auth.usuario',
         type: 'object',
         required: [ 'cpfCnpj', 'senha', 'empresa' ],
         properties: {
             cpfCnpj: { type: 'string', default: null },
             senha: { type: 'string', default: null },
-            empresa: { type: 'object', default: null }
+            empresa: { 
+                $ref: 'empresa.autenticacao'
+            }
         },
         errorMessage: {
             required: {
-                cpfCnpj: "O atributo 'cpfCnpj' deve ser informado",
-                senha: "O atributo 'senha' deve ser informado",
-                empresa: "O atributo 'empresa' deve ser informado"
+                cpfCnpj: "O atributo 'Usuario.cpfCnpj' deve ser informado",
+                senha: "O atributo 'Usuario.senha' deve ser informado",
+                empresa: "O atributo 'Usuario.empresa' deve ser informado"
             }
-        }
+        },
+        referencias: [ EmpresaSchema.autenticacao ]
     }
 }
 

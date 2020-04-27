@@ -13,7 +13,7 @@ class Routes {
     }
     
     private initAuthRoutes(app: Application): void {
-        app.route('/api/v1/auth/token').post(validador(AuthSchema.autenticar), AuthRoutes.auth);
+        app.route('/api/v1/auth/token').post(validador(AuthSchema.usuario), AuthRoutes.auth);
     }
 
     private initUserRoutes(app: Application, auth: any): void {

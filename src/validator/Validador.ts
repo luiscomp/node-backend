@@ -10,10 +10,12 @@ import { Request, Response, NextFunction } from 'express';
 var ajv = new Ajv({allErrors: true, jsonPointers: true})
 require('ajv-errors')(ajv);
 
-export function validador(schema : any, schemasRef : Array<any> = []) {
+export function validador(schema : any) {
     
     ajv.addSchema(schema);
-    schemasRef.forEach(schema => ajv.addSchema(schema))
+    if(schema.referencias) {
+        schema.referencias.forEach(schema => ajv.addSchema(schema))
+    }
 
     return function(req: Request, res: Response, next: NextFunction) {
         var validate = ajv.compile(schema)

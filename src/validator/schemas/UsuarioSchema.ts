@@ -1,3 +1,5 @@
+import EmpresaSchema from "./EmpresaSchema";
+
 class UsuarioSchema {
     public gravar = {
         $id: 'usuario.gravar',
@@ -24,7 +26,8 @@ class UsuarioSchema {
                 perfil: "O atributo 'perfil' deve ser informado",
                 empresa: "O atributo 'empresa' deve ser informado"
             }
-        }
+        },
+        referencias: [ EmpresaSchema.gravarRelacionamento ]
     }
 
     public atualizar = {
@@ -40,7 +43,9 @@ class UsuarioSchema {
             dataCadastro: { type: 'string', default: null },
             ultimoAcesso: { type: 'string', default: null },
             inativo: { type: 'boolean', default: null },
-            empresa: { type: 'object', default: null }
+            empresa: { 
+                $ref: 'empresa.atualizar'    
+            }
         },
         errorMessage: {
             required: {
@@ -50,7 +55,8 @@ class UsuarioSchema {
                 perfil: "O atributo 'perfil' deve ser informado",
                 empresa: "O atributo 'empresa' deve ser informado"
             }
-        }
+        },
+        referencias: [ EmpresaSchema.gravarRelacionamento ]
     }
 }
 
