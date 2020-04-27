@@ -10,15 +10,12 @@ env:
   global:
   - NODE_ENV: test
   - TRAVIS: true
-addons:
-  sonarcloud:
-    organization: "luiscomp"
-    token:
-      secure: "e9f44b1380601a9df3d3281381a7c27aabc3000d"
 before_script:
-  - mysql -u root < tests/db/estudo_test.sql
+  - mysql -u root < tests/db/Schema.sql
+  - mysql -u root < tests/db/Empresa.sql
+  - mysql -u root < tests/db/Usuario.sql
   - mysql -u root -e "CREATE USER 'tester'@'localhost' IDENTIFIED BY 'local@test';";
-  - mysql -u root -e "GRANT ALL PRIVILEGES ON estudo_test.* TO 'tester'@'localhost';";
+  - mysql -u root -e "GRANT ALL PRIVILEGES ON amigo.* TO 'tester'@'localhost';";
   - npm i -g gulp-cli
   - npm install
   - gulp
@@ -29,6 +26,4 @@ jobs:
       script: 
         - npm run u-test
         - npm run i-test
-    - stage: "Sonar Scanner"
-      script: sonar-scanner
     
