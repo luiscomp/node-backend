@@ -1,6 +1,3 @@
-// var Ajv = require('ajv');
-// var ajv = new Ajv({allErrors: true, jsonPointers: true});
-// require('ajv-errors')(ajv /*, {singleError: true} */);
 import * as Ajv from 'ajv'
 import * as HTTPStatus from 'http-status';
 import ObjetoResultado from '../utils/requests/ObjetoResultado';
@@ -14,7 +11,11 @@ export function validador(schema : any) {
     
     ajv.addSchema(schema);
     if(schema.referencias) {
-        schema.referencias.forEach(schema => ajv.addSchema(schema))
+        schema.referencias.forEach((schema: any) => {
+            if(!ajv.getSchema(schema.$id)) {
+                ajv.addSchema(schema)
+            }
+        })
     }
 
     return function(req: Request, res: Response, next: NextFunction) {

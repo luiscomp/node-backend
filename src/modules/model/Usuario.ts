@@ -1,5 +1,4 @@
 import { IUsuario } from "./types/IUsuario";
-import PerfilUsuario from "./enums/PerfilUsuario";
 import Empresa from "./Empresa";
 
 class Usuario implements IUsuario {
@@ -7,7 +6,7 @@ class Usuario implements IUsuario {
     nome: string;
     cpfCnpj: string;
     senha: string;
-    perfil: PerfilUsuario;
+    perfil: string;
     dataCadastro?: Date;
     ultimoAcesso?: Date;
     inativo?: boolean;
