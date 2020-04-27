@@ -14,8 +14,8 @@
         ]
     },
     "include": [
-        "server/**/*.ts",
-        "server/*.ts",
+        "src/**/*.ts",
+        "src/*.ts",
         "tests/**/*.ts"
     ],
     "exclude": [

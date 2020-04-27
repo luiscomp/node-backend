@@ -2,10 +2,10 @@
   "name": "node-typescript",
   "version": "1.0.0",
   "description": "Código base para APIs com TypeScript",
-  "main": "server/server.ts",
+  "main": "src/server/server.ts",
   "scripts": {
-    "start": "cross-env NODE_ENV=development ts-node ./server/server.ts",
-    "builded": "cross-env NODE_ENV=production node ./dist/server/server.js",
+    "start": "cross-env NODE_ENV=development ts-node ./src/core/server/server.ts",
+    "build": "cross-env NODE_ENV=production node ./dist/src/core/server/server.js",
     "u-test": "cross-env NODE_ENV=test mocha --opts ./dist/tests/unit/config/mocha.opts ./dist/tests/unit/unit.test.js --exit",
     "i-test": "cross-env NODE_ENV=test mocha --opts ./dist/tests/integration/config/mocha.opts ./dist/tests/integration/integration.test.js --exit",
     "u-cover": "nyc --reporter=html npm run u-test",
@@ -35,10 +35,7 @@
     "morgan": "^1.9.1",
     "mysql": "^2.18.1",
     "passport": "^0.4.1",
-    "passport-jwt": "^4.0.0",
-    "pg": "^7.17.0",
-    "sequelize": "^5.21.3",
-    "sequelize-cli": "^5.5.1"
+    "passport-jwt": "^4.0.0"
   },
   "devDependencies": {
     "@types/bluebird": "^3.5.29",
@@ -52,7 +49,6 @@
     "@types/mysql": "^2.15.8",
     "@types/passport": "^1.0.2",
     "@types/passport-jwt": "^3.0.3",
-    "@types/sequelize": "^4.28.8",
     "@types/supertest": "^2.0.8",
     "chai": "^4.2.0",
     "cross-env": "^7.0.0",
