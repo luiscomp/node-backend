@@ -30,10 +30,10 @@ before_script:
 script: echo "Executanto tarefa..."
 jobs:
   include:
-    # - stage: "Testes"
-    #   script: 
-    #     - npm run u-test
-    #     - npm run i-test
+    - stage: "Testes"
+      script: 
+        - npm run u-test
+        - npm run i-test
     - stage: "Sonar Scanner"
       script: sonar-scanner
     

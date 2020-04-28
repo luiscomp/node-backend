@@ -63,8 +63,7 @@ class UsuarioPersistence extends PersistenceUtils {
                 let options = {sql: sql, nestTables: true};
                 results = await this.conexao.query(options, id);
 
-                let usuario = new Usuario();
-                usuario = { 
+                let usuario = { 
                     ...results[0]['Usuario'],
                     empresa: { 
                         ...results[0]['Empresa']

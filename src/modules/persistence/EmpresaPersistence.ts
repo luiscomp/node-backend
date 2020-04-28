@@ -92,7 +92,6 @@ class EmpresaPersistence extends PersistenceUtils {
     
     atualizar(empresa: Empresa): Promise<Empresa> {
         return new Promise(async (resolve, reject) => {
-            let sql: string = UPDATE;
             let parametros = [];
             try {
                 parametros.push(empresa.codigo);
