@@ -27,7 +27,6 @@ before_script:
   - npm i -g gulp-cli
   - npm install
   - gulp
-  - ls -l
 script: echo "Executanto tarefa..."
 jobs:
   include:
@@ -36,4 +35,5 @@ jobs:
         - npm run u-cover
         - npm run i-cover
         - sonar-scanner
+        - ls -l
     
