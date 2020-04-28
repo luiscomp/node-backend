@@ -19,8 +19,7 @@ before_script:
   - mysql -u root < tests/db/Schema.sql
   - mysql -u root amigo < tests/db/Empresa.sql
   - mysql -u root amigo < tests/db/Usuario.sql
-  - mysql -u root -e "USE amigo;"
-  - mysql -u root -e "SELECT * FROM Usuario;"
+  - mysql -u root -e amigo "SELECT * FROM Usuario;"
   - mysql -u root -e "CREATE USER 'tester'@'localhost' IDENTIFIED BY 'local@test';";
   - mysql -u root -e "GRANT ALL PRIVILEGES ON amigo.* TO 'tester'@'localhost';";
   - npm i -g gulp-cli
