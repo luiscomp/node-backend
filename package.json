@@ -8,8 +8,8 @@
     "build": "cross-env NODE_ENV=production node ./dist/src/core/server/server.js",
     "u-test": "cross-env NODE_ENV=test mocha --opts ./dist/tests/unit/config/mocha.opts ./dist/tests/unit/unit.test.js --exit",
     "i-test": "cross-env NODE_ENV=test mocha --opts ./dist/tests/integration/config/mocha.opts ./dist/tests/integration/integration.test.js --exit",
-    "u-cover": "nyc --reporter=html npm run u-test",
-    "i-cover": "nyc --reporter=html npm run i-test"
+    "u-cover": "nyc --reporter=lcov --reporter=text-summary npm run u-test",
+    "i-cover": "nyc --reporter=lcov --reporter=text-summary npm run i-test"
   },
   "keywords": [
     "API",
