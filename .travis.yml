@@ -14,6 +14,7 @@ addons:
   sonarcloud:
     organization: "luiscomp"
     token: "54c359dc7f030fb6a68f43fd0c1724ed6168a227"
+    projectKey: "luiscomp_node-backend"
     branches:
     - master
 before_script:
