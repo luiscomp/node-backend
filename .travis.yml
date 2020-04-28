@@ -27,6 +27,7 @@ before_script:
   - npm i -g gulp-cli
   - npm install
   - gulp
+  - ls -l
 script: echo "Executanto tarefa..."
 jobs:
   include:
