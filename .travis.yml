@@ -34,6 +34,5 @@ jobs:
       script: 
         - npm run u-cover
         - npm run i-cover
-        - ls -l
         - sonar-scanner
     
