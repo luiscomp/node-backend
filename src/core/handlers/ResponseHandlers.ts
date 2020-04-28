@@ -10,7 +10,7 @@ class ResponseHandlers {
 
     onError(res: Response, message: string, error: any, usuario: Usuario) {
         getLogger("logger").error(`${usuario.nome} - ${usuario.empresa.nomeFantasia}: ${error}`);
-        
+
         let resultado: ObjetoResultado = new ObjetoResultado();
         resultado.status = CodigosResposta[CodigosResposta.FALHA];
         resultado.mensagem = message;

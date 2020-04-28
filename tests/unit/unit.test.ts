@@ -31,98 +31,95 @@ describe('Testes Unitários de Persistência', () => {
         done();
     })
 
-    beforeEach((done) => {
+    beforeEach(async function() {
+        this.timeout(5000);
+
         let testPersistence: TestPersistence = new TestPersistence(conexao);
         let empresaPersistence: EmpresaPersistence = new EmpresaPersistence(conexao);
         let usuarioPersistence: UsuarioPersistence = new UsuarioPersistence(conexao);
-        
-        testPersistence.limparSchema().then(() => {
-            empresaPersistence.novo(empresa).then(() => {
-                usuarioPersistence.novo(usuario).then(() => {
-                    done();
-                })
-            })
-        });
+
+        await testPersistence.limparSchema();
+        await empresaPersistence.novo(empresa);
+        await usuarioPersistence.novo(usuario);
     })
 
     describe('Método listar()', () => {
-        it('Deve retornar uma lista com todos os usuários', async (done) => {
+        it('Deve retornar uma lista com todos os usuários', async () => {
             let usuarioPersistence: UsuarioPersistence = new UsuarioPersistence(conexao);
 
             const data = await usuarioPersistence.listar(usuario, -1);
-            expect(data).to.be.an('array');
-            expect(data[0]).to.have.keys(['id']);
-            done();
+
+            await expect(Promise.resolve(data)).to.eventually.be.an('array');
+            await expect(Promise.resolve(data[0])).to.eventually.have.deep.property('id');
         });
     });
 
     describe('Método quantidade()', () => {
-        it('Deve retornar a quantidade de usuários de acordo com o filtro passado', async (done) => {
+        it('Deve retornar a quantidade de usuários de acordo com o filtro passado', async () => {
             let usuarioPersistence: UsuarioPersistence = new UsuarioPersistence(conexao);
 
             const data = await usuarioPersistence.quantidade(usuario);
-            expect(data).to.be.an('number');
-            expect(data).to.be.equals(1);
-            done();
+
+            await expect(Promise.resolve(data)).to.eventually.be.an('number');
+            await expect(Promise.resolve(data)).to.eventually.be.equals(1);
         });
     });
 
     describe('Método recuperar()', () => {
-        it('Deve retornar um objeto do tipo Usuario', async (done) => {
+        it('Deve retornar um objeto do tipo Usuario', async () => {
             let usuarioPersistence: UsuarioPersistence = new UsuarioPersistence(conexao);
 
             const data = await usuarioPersistence.recuperar(1);
-            expect(data).to.be.an('object');
-            expect(data.nome).to.be.equals('Luis Eduardo Miranda Ferreira');
-            expect(data.cpfCnpj).to.be.equals('05204045309');
-            expect(data.senha).to.be.equals('123456');
-            done();
+
+            await expect(Promise.resolve(data)).to.eventually.be.an('object');
+            await expect(Promise.resolve(data.nome)).to.eventually.be.equals('Luis Eduardo Miranda Ferreira');
+            await expect(Promise.resolve(data.cpfCnpj)).to.eventually.be.equals('05204045309');
+            await expect(Promise.resolve(data.senha)).to.eventually.be.equals('123456');
         });
     });
 
     describe('Método novo()', () => {
-        it('Deve criar um novo usuário', async (done) => {
+        it('Deve criar um novo usuário', async () => {
             let usuarioPersistence: UsuarioPersistence = new UsuarioPersistence(conexao);
 
             const data = await usuarioPersistence.novo(usuario);
-            expect(data).to.be.an('object');
-            expect(data.nome).to.be.equals('Luis Eduardo Miranda Ferreira');
-            expect(data.cpfCnpj).to.be.equals('05204045309');
-            expect(data.senha).to.be.equals('123456');
-            done();
+            await expect(Promise.resolve(data)).to.eventually.be.an('object');
+            await expect(Promise.resolve(data.nome)).to.eventually.be.equals('Luis Eduardo Miranda Ferreira');
+            await expect(Promise.resolve(data.cpfCnpj)).to.eventually.be.equals('05204045309');
+            await expect(Promise.resolve(data.senha)).to.eventually.be.equals('123456');
         });
     });
 
     describe('Método atualizar()', () => {
-        it('Deve atualizar o usuário padrão', async (done) => {
+        it('Deve atualizar o usuário padrão', async () => {
             let usuarioPersistence: UsuarioPersistence = new UsuarioPersistence(conexao);
 
-            const usuario2: Usuario = { ...usuario }
-            usuario2.nome = 'Luis Eduardo';
-            usuario2.cpfCnpj = '00000000000';
-            usuario2.senha = '159487'
+            const usuario2: Usuario = { 
+                ...usuario, 
+                nome: 'Luis Eduardo', 
+                cpfCnpj: '00000000000', 
+                senha: '159487' 
+            }
 
             await usuarioPersistence.atualizar(usuario2);
-            const data: Usuario = await usuarioPersistence.recuperar(1);
+            const data: Usuario = await usuarioPersistence.recuperar(usuario2.id);
 
-            expect(data).to.be.an('object');
-            expect(data.nome).to.be.equals('Luis Eduardo');
-            expect(data.cpfCnpj).to.be.equals('00000000000');
-            expect(data.senha).to.be.equals('159487');
-            done();
+            await expect(Promise.resolve(data)).to.eventually.be.an('object');
+            await expect(Promise.resolve(data.nome)).to.be.eventually.equals('Luis Eduardo');
+            await expect(Promise.resolve(data.cpfCnpj)).to.eventually.be.equals('00000000000');
+            await expect(Promise.resolve(data.senha)).to.eventually.be.equals('159487');
         });
     });
 
-    describe('Método deletar()', () => {
-        it('Deve deletar um usuário', async (done) => {
+    describe('Método inativar()', () => {
+        it('Deve inativar um usuário', async () => {
             let usuarioPersistence: UsuarioPersistence = new UsuarioPersistence(conexao);
 
             await usuarioPersistence.inativar(usuario.id);
-            const data: Usuario = await usuarioPersistence.recuperar(1);
+            const data: Usuario = await usuarioPersistence.recuperar(usuario.id);
 
-            expect(data).to.be.an('number');
-            expect(data.inativo).to.be.equals(1);
-            done();
+            await expect(Promise.resolve(data)).to.eventually.be.an('object');
+            await expect(Promise.resolve(data.inativo)).to.eventually.be.equals(1);
         });
     });
 });

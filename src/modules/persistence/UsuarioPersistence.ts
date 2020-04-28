@@ -8,7 +8,7 @@ const SELECT = ` SELECT ${CAMPOS}, Empresa.id, Empresa.nomeFantasia FROM Usuario
 const SELECT_COUNT = ` SELECT COUNT(*) AS quantidade FROM Usuario `;
 const INSERT = ` INSERT INTO Usuario (nome, cpfCnpj, senha, perfil, dataCadastro, idEmpresa) VALUES ( ? , ? , ? , ? , DATE(CONVERT_TZ(NOW(),'GMT', 'America/Fortaleza')) , ? ) `;
 const UPDATE = ` UPDATE Usuario SET nome = ? , cpfCnpj = ? , perfil = ? WHERE id = ? `;
-const INATIVAR = ` UPDATE Usuario SET inativo = ? WHERE id = ? `;
+const INATIVAR = ` UPDATE Usuario SET inativo = 1 WHERE id = ? `;
 
 class UsuarioPersistence extends PersistenceUtils {
     
@@ -105,19 +105,15 @@ class UsuarioPersistence extends PersistenceUtils {
             let parametros = [];
             try {
                 if(usuario.senha && usuario.senha.length > 0) {
-                    this.incluirCampoNoUpdate(sql, 'senha', usuario.senha)
+                    sql = this.incluirCampoNoUpdate(sql, 'senha', usuario.senha)
                 }
 
                 parametros.push(usuario.nome)
                 parametros.push(usuario.cpfCnpj)
                 parametros.push(usuario.perfil)
-                parametros.push(usuario.empresa.id)
-                if(usuario.senha && usuario.senha.length > 0) {
-                    parametros.push(usuario.senha)
-                }
                 parametros.push(usuario.id)
 
-                await this.conexao.query(UPDATE, parametros);
+                await this.conexao.query(sql, parametros);
                 resolve(usuario);
             } catch(error) {
                 reject(error.sqlMessage);

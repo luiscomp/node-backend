@@ -41,8 +41,7 @@ class PersistenceUtils {
     }
 
     incluirCampoNoUpdate(sqlQuery: string, campo: string, valor: any): string {
-        let query = sqlQuery.toUpperCase();
-        query = this.insert(query, query.lastIndexOf('WHERE'), `, ${campo} = ${valor} `)
+        sqlQuery = this.insert(sqlQuery, sqlQuery.lastIndexOf('WHERE'), `, ${campo} = ${valor} `)
         return sqlQuery;
     }
 

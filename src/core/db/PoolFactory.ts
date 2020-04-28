@@ -16,11 +16,11 @@ class PoolFactory {
         });
 
         poolDeConexao.on('acquire', function (connection) {
-            console.log('Connection %d acquired', connection.threadId);
+            // console.log('Connection %d acquired', connection.threadId);
         });
 
         poolDeConexao.on('release', function (connection) {
-            console.log('Connection %d released', connection.threadId);
+            // console.log('Connection %d released', connection.threadId);
         });
 
         process.on('SIGINT', () => 

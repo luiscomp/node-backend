@@ -54,6 +54,9 @@ class UsuarioService {
 
             res.status(HTTPStatus.OK).json(resultado);
         } catch(error) {
+            console.log(error);
+            
+
             _.partial(ResponseHandlers.onError, res, 'Erro ao criar novo Usuário')(error, this.usuario);
         }
     }

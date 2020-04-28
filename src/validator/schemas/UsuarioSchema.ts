@@ -15,7 +15,7 @@ class UsuarioSchema {
             ultimoAcesso: { type: 'string', default: null },
             inativo: { type: 'boolean', default: null },
             empresa: { 
-                $ref: 'empresa.gravarRelacionamentoDois'
+                $ref: 'empresa.gravarRelacionamento'
             }
         },
         errorMessage: {
@@ -44,7 +44,7 @@ class UsuarioSchema {
             ultimoAcesso: { type: 'string', default: null },
             inativo: { type: 'boolean', default: null },
             empresa: { 
-                $ref: 'empresa.gravarRelacionamentoDois'    
+                $ref: 'empresa.gravarRelacionamento'    
             }
         },
         errorMessage: {

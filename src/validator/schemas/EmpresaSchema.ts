@@ -18,7 +18,7 @@ class EmpresaSchema {
         type: 'object',
         required: [ 'id' ],
         properties: {
-            id: { type: 'string', default: null }
+            id: { type: 'number', default: null }
         },
         errorMessage: {
             required: {

@@ -19,11 +19,7 @@ class TestPersistence extends PersistenceUtils {
             var truncates = await this.conexao.query(SELECT_TRUNCATES)
 
             if(truncates.length > 0) {
-                await this.conexao.query(KEYS_OFF);
-                await truncates.forEach(async (sql: String) => {
-                    console.log(await this.conexao.query(sql));
-                });
-                await this.conexao.query(KEYS_ON);
+                await this.conexao.query(`${KEYS_OFF} ${truncates.map((sql: any) => sql.sql).join('')} ${KEYS_ON}`);
             }
 
             resolve();

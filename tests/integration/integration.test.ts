@@ -1,41 +1,55 @@
 import * as HTTPStatus from 'http-status';
 import * as jwt from 'jsonwebtoken';
 import { app, request, expect } from './config/helpers';
-import Usuario from '../../src/modules/model/Usuario';
 import CodigosResposta from '../../src/utils/requests/CodigosResposta';
+import Empresa from '../../src/modules/model/Empresa';
+import Usuario from '../../src/modules/model/Usuario';
+import EmpresaPersistence from '../../src/modules/persistence/EmpresaPersistence';
 import UsuarioPersistence from '../../src/modules/persistence/UsuarioPersistence'
 import TestPersistence from '../../src/modules/persistence/TestPersistence';
-import Empresa from '../../src/modules/model/Empresa';
 import PoolFactory from '../../src/core/db/PoolFactory';
+import PerfilUsuario from '../../src/modules/model/enums/PerfilUsuario';
+require('events').EventEmitter.prototype._maxListeners = 100;
 
 describe('Testes de Integração', () => {
 
     'use strict';
-    const config = require('../../server/config/config')();
-    let token: String;
-    const usuario: Usuario = new Usuario();
+    const config = require('../../src/config/config')();
     const conexao = new PoolFactory().getPool();
+    const empresa: Empresa = new Empresa();
+    const usuario: Usuario = new Usuario();
+    let token: String;
 
-    before((done) => {
+    before(done => {
+        empresa.id = 1;
+        empresa.codigo = '1';
+        empresa.proprietario = 'Thays Ferreira dos Santos';
+        empresa.cpfCnpj= '00000000000001'
+        empresa.nomeEmpresarial = 'PET MANIA VARIDADE ANIMAL ME';
+        empresa.nomeFantasia = 'PET MANIA';
+
         usuario.id = 1;
-        usuario.nome = 'Usuario Padrão';
+        usuario.nome = 'Luis Eduardo Miranda Ferreira';
         usuario.cpfCnpj = '05204045309';
-        usuario.empresa = new Empresa();
-        usuario.empresa.codigo = '1';
+        usuario.senha = '123456';
+        usuario.perfil = PerfilUsuario[PerfilUsuario.GESTOR];
+        usuario.empresa = empresa
+
         done();
     })
 
+    beforeEach(async function() {
+        this.timeout(5000);
 
-    beforeEach((done) => {
         let testPersistence: TestPersistence = new TestPersistence(conexao);
+        let empresaPersistence: EmpresaPersistence = new EmpresaPersistence(conexao);
         let usuarioPersistence: UsuarioPersistence = new UsuarioPersistence(conexao);
 
-        testPersistence.limparSchema().then(() => {
-            usuarioPersistence.novo(usuario).then(() => {
-                token = jwt.sign({ id: 1 }, config.secret, { expiresIn: '30m' });
-                done();
-            })
-        });
+        await testPersistence.limparSchema();
+        await empresaPersistence.novo(empresa);
+        await usuarioPersistence.novo(usuario);
+
+        token = jwt.sign({ id: 1 }, config.secret, { expiresIn: '30m' });
     })
 
     describe('POST /api/v1/auth/token ', () => {
@@ -55,12 +69,6 @@ describe('Testes de Integração', () => {
 
     describe('POST /api/v1/auth/token ', () => {
         it('Deve autenticar e receber um token de acesso', done => {
-            const usuario: Usuario = new Usuario();
-            usuario.cpfCnpj = '05204045309';
-            usuario.senha = '123456';
-            usuario.empresa = new Empresa();
-            usuario.empresa.codigo = '1';
-
             request(app)
                 .post('/api/v1/auth/token')
                 .send(usuario)
@@ -75,7 +83,7 @@ describe('Testes de Integração', () => {
     });
 
     describe('POST /api/v1/auth/token ', () => {
-        it('Não deve autenticar nem gerar token de autenticação', done => {
+        it('Não deve autenticar por informar credenciais inválidas', done => {
             const usuario: Usuario = new Usuario();
             usuario.cpfCnpj = '00000000000';
             usuario.senha = '984651';
@@ -103,7 +111,7 @@ describe('Testes de Integração', () => {
                 .end((error, res) => {
                     expect(res.status).to.equal(HTTPStatus.OK);
                     expect(res.body.lista).to.be.an('array')
-                    expect(res.body.lista[0]).to.have.keys(['id', 'nome', 'cpfCnpj', 'senha'])
+                    expect(res.body.lista[0]).to.have.keys(['id', 'cpfCnpj', 'dataCadastro', 'nome', 'nomeFantasia', 'perfil', 'senha'])
                     expect(res.body.quantidade).to.be.equal(1)
                     done(error);
                 });
@@ -111,30 +119,25 @@ describe('Testes de Integração', () => {
     });
 
     describe('GET /api/v1/usuario/:id', () => {
-        it('Deve retornar um JSON com o usuário informado', done => {
+        it('Deve retornar um JSON do usuário de id informado', done => {
             request(app)
-                .get(`/api/v1/usuario/${1}`)
+                .get(`/api/v1/usuario/${usuario.id}`)
                 .set('Content-Type', 'application/json')
                 .set('Accept', 'application/json')
                 .set('Authorization', `Bearer ${token}`)
                 .end((error, res) => {
                     expect(res.status).to.equal(HTTPStatus.OK);
                     expect(res.body.item).to.be.an('object');
-                    expect(res.body.item.nome).to.be.equals('Usuario Padrão');
+                    expect(res.body.item.nome).to.be.equals('Luis Eduardo Miranda Ferreira');
                     expect(res.body.item.cpfCnpj).to.be.equals('05204045309');
-                    expect(res.body.item.senha).to.be.equals('156489');
+                    expect(res.body.item.senha).to.be.equals('123456');
                     done(error);
                 });
         });
     });
 
     describe('POST /api/v1/usuario/novo', () => {
-        it('Deve gravar um novo usuário se passado sem o id', done => {
-            const usuario: Usuario = new Usuario();
-            usuario.nome = 'Novo Usuario';
-            usuario.cpfCnpj = '00000000000';
-            usuario.senha = '159487'
-
+        it('Deve gravar um novo usuário', done => {
             request(app)
                 .post(`/api/v1/usuario/novo`)
                 .set('Content-Type', 'application/json')
@@ -144,9 +147,9 @@ describe('Testes de Integração', () => {
                 .end((error, res) => {
                     expect(res.status).to.equal(HTTPStatus.OK);
                     expect(res.body.item).to.be.an('object');
-                    expect(res.body.item.nome).to.be.equals('Novo Usuario');
-                    expect(res.body.item.cpfCnpj).to.be.equals('00000000000');
-                    expect(res.body.item.senha).to.be.equals('159487');
+                    expect(res.body.item.nome).to.be.equals('Luis Eduardo Miranda Ferreira');
+                    expect(res.body.item.cpfCnpj).to.be.equals('05204045309');
+                    expect(res.body.item.senha).to.be.equals('123456');
                     done(error);
                 });
         });
@@ -155,7 +158,6 @@ describe('Testes de Integração', () => {
     describe('POST /api/v1/usuario/novo', () => {
         it('Deve dar erro ao tentar gravar um usuário com os dados incompletos', done => {
             const usuario: Usuario = new Usuario();
-
             request(app)
                 .post(`/api/v1/usuario/novo`)
                 .set('Content-Type', 'application/json')
@@ -171,23 +173,24 @@ describe('Testes de Integração', () => {
     });
 
     describe('POST /api/v1/usuario/atualizar', () => {
-        it('Deve editar um usuário existente se passado com o id', done => {
-            const usuario: Usuario = new Usuario();
-            usuario.id = 1;
-            usuario.nome = 'Luis Eduardo Miranda';
-            usuario.cpfCnpj = '00000000000';
-            usuario.senha = '159487'
+        it('Deve editar um usuário existente', done => {
+            const usuario2: Usuario = { 
+                ...usuario, 
+                nome: 'Luis Eduardo', 
+                cpfCnpj: '00000000000', 
+                senha: '159487' 
+            }
 
             request(app)
                 .post(`/api/v1/usuario/atualizar`)
                 .set('Content-Type', 'application/json')
                 .set('Accept', 'application/json')
                 .set('Authorization', `Bearer ${token}`)
-                .send(usuario)
+                .send(usuario2)
                 .end((error, res) => {
                     expect(res.status).to.equal(HTTPStatus.OK);
                     expect(res.body.item).to.be.an('object');
-                    expect(res.body.item.nome).to.be.equals('Luis Eduardo Miranda');
+                    expect(res.body.item.nome).to.be.equals('Luis Eduardo');
                     expect(res.body.item.cpfCnpj).to.be.equals('00000000000');
                     expect(res.body.item.senha).to.be.equals('159487');
                     done(error);
@@ -196,7 +199,7 @@ describe('Testes de Integração', () => {
     });
 
     describe('POST /api/v1/usuario/atualizar', () => {
-        it('Deve dar erro ao tentar atualizar um usuário sem id ou os dados obrigatórios', done => {
+        it('Deve dar erro ao tentar atualizar um usuário com dados incompletos', done => {
             const usuario: Usuario = new Usuario();
 
             request(app)
@@ -207,7 +210,7 @@ describe('Testes de Integração', () => {
                 .send(usuario)
                 .end((error, res) => {
                     expect(res.status).to.equal(HTTPStatus.BAD_REQUEST);
-                    expect(res.body.status).to.be.equals(CodigosResposta['SCHEMA_INVALIDO']);
+                    expect(res.body.status).to.be.equals(CodigosResposta[CodigosResposta.SCHEMA_INVALIDO]);
                     done(error);
                 });
         });
@@ -216,7 +219,7 @@ describe('Testes de Integração', () => {
     describe('POST /api/v1/usuario/:id/inativar', () => {
         it('Deve inativar um usuário', done => {
             request(app)
-                .delete(`/api/v1/usuario/${1}/inativar`)
+                .post(`/api/v1/usuario/${usuario.id}/inativar`)
                 .set('Content-Type', 'application/json')
                 .set('Accept', 'application/json')
                 .set('Authorization', `Bearer ${token}`)
