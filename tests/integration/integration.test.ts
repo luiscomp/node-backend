@@ -111,7 +111,7 @@ describe('Testes de Integração', () => {
                 .end((error, res) => {
                     expect(res.status).to.equal(HTTPStatus.OK);
                     expect(res.body.lista).to.be.an('array')
-                    expect(res.body.lista[0]).to.have.keys(['id', 'cpfCnpj', 'dataCadastro', 'nome', 'nomeFantasia', 'perfil', 'senha'])
+                    expect(res.body.lista[0]).to.have.key('id')
                     expect(res.body.quantidade).to.be.equal(1)
                     done(error);
                 });
