@@ -20,7 +20,9 @@
     ],
     "exclude": [
         "node_modules",
-        "dist"
+        "dist",
+        "coverage",
+        ".nyc_output"
     ],
     "buildOnSave": true,
     "compileOnSave": true
