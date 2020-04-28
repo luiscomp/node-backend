@@ -13,8 +13,9 @@ env:
 addons:
   sonarcloud:
     organization: "luiscomp"
-    token:
-      secure: "54c359dc7f030fb6a68f43fd0c1724ed6168a227"
+    token: "54c359dc7f030fb6a68f43fd0c1724ed6168a227"
+    branches:
+    - master
 before_script:
   - mysql -u root < tests/db/Schema.sql
   - mysql -u root amigo < tests/db/Empresa.sql
@@ -28,10 +29,10 @@ before_script:
 script: echo "Executanto tarefa..."
 jobs:
   include:
-    - stage: "Testes"
-      script: 
-        - npm run u-test
-        - npm run i-test
+    # - stage: "Testes"
+    #   script: 
+    #     - npm run u-test
+    #     - npm run i-test
     - stage: "Sonar Scanner"
       script: sonar-scanner
     
