@@ -1,4 +1,4 @@
-# Projeto Base Node em TypeScript 
+# Projeto Base Node em TypeScript
 Projeto criado para inicio de qualquer projeto Node para backend, utilizando MySQL como banco de dados.
 
 [![Build Status](https://travis-ci.com/luiscomp/node-backend.svg?branch=master)](https://travis-ci.com/luiscomp/node-backend)
