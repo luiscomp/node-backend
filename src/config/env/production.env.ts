@@ -1,10 +1,10 @@
 module.exports = {
     env: 'production',
-    dbHost: "ec2-18-223-24-51.us-east-2.compute.amazonaws.com",
-    dbPort: "3306",
-    dbUser: "ananke_dev",
-    dbPassword: "Ug9NPuPYqF",
-    dataBase: "amigo",
+    dbHost: "",
+    dbPort: "",
+    dbUser: "",
+    dbPassword: "",
+    dataBase: "",
 
     serverPort: 3000,
     secret: 'local@dev'
