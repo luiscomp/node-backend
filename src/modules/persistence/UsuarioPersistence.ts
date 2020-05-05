@@ -60,10 +60,10 @@ class UsuarioPersistence extends PersistenceUtils {
             try {
                 sql = this.incluirClausulaNoWhereAND(sql, ' Usuario.id = ? ');
 
-                let options = {sql: sql, nestTables: true};
+                const options = {sql: sql, nestTables: true};
                 results = await this.conexao.query(options, id);
 
-                let usuario = { 
+                const usuario = { 
                     ...results[0]['Usuario'],
                     empresa: { 
                         ...results[0]['Empresa']
@@ -80,7 +80,7 @@ class UsuarioPersistence extends PersistenceUtils {
     novo(usuario: Usuario): Promise<Usuario> {
         return new Promise(async (resolve, reject) => {
             let results: any;
-            let parametros = [];
+            const parametros = [];
             try {
                 parametros.push(usuario.nome);
                 parametros.push(usuario.cpfCnpj);
@@ -101,7 +101,7 @@ class UsuarioPersistence extends PersistenceUtils {
     atualizar(usuario: Usuario): Promise<Usuario> {
         return new Promise(async (resolve, reject) => {
             let sql: string = UPDATE;
-            let parametros = [];
+            const parametros = [];
             try {
                 if(usuario.senha && usuario.senha.length > 0) {
                     sql = this.incluirCampoNoUpdate(sql, 'senha', usuario.senha)

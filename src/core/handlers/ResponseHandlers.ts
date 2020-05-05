@@ -8,18 +8,19 @@ import Usuario from '../../modules/model/Usuario';
 
 class ResponseHandlers {
 
-    onError(res: Response, message: string, error: any, usuario: Usuario) {
+    onError(res: Response, message: string, error: any, usuario: Usuario): void {
         getLogger("logger").error(`${usuario.nome} - ${usuario.empresa.nomeFantasia}: ${error}`);
 
-        let resultado: ObjetoResultado = new ObjetoResultado();
+        const resultado: ObjetoResultado = new ObjetoResultado();
         resultado.status = CodigosResposta[CodigosResposta.FALHA];
         resultado.mensagem = message;
     
         res.status(HTTPStatus.INTERNAL_SERVER_ERROR).json(resultado);
     } 
 
-    errorHandlerApi(err: ErrorRequestHandler, req: Request, res: Response, next: NextFunction) {
-        getLogger("logger").error(`API error handler foi executado: ${err}`);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    errorHandlerApi(err: ErrorRequestHandler, req: Request, res: Response, next: NextFunction): void {
+        getLogger("logger").error(`API error handler foi executado: ${JSON.stringify(err)}`);
 
         res.status(500).json({
             errorCode: 'ERR-001',

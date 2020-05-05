@@ -15,9 +15,9 @@ class UsuarioService {
         this.usuario = usuario;
     }
 
-    async listar(conexao: any, usuario: Usuario, pagina: number, res: Response) {
-        let usuarioPersistence: UsuarioPersistence = new UsuarioPersistence(conexao);
-        let resultado: ObjetoResultado = new ObjetoResultado();
+    async listar(conexao: any, usuario: Usuario, pagina: number, res: Response): Promise<any> {
+        const usuarioPersistence: UsuarioPersistence = new UsuarioPersistence(conexao);
+        const resultado: ObjetoResultado = new ObjetoResultado();
         try {
             resultado.lista = await usuarioPersistence.listar(usuario, pagina);
             resultado.quantidade = await usuarioPersistence.quantidade(usuario);
@@ -30,9 +30,9 @@ class UsuarioService {
         }
     }
 
-    async recuperar(conexao: any, id: number, res: Response) {
-        let usuarioPersistence: UsuarioPersistence = new UsuarioPersistence(conexao);
-        let resultado: ObjetoResultado = new ObjetoResultado();
+    async recuperar(conexao: any, id: number, res: Response): Promise<any> {
+        const usuarioPersistence: UsuarioPersistence = new UsuarioPersistence(conexao);
+        const resultado: ObjetoResultado = new ObjetoResultado();
         try {
             resultado.item = await usuarioPersistence.recuperar(id);
             resultado.status = CodigosResposta[CodigosResposta.SUCESSO];
@@ -44,9 +44,9 @@ class UsuarioService {
         }
     }
 
-    async novo(conexao: any, usuario: Usuario, res: Response) {
-        let usuarioPersistence: UsuarioPersistence = new UsuarioPersistence(conexao);
-        let resultado: ObjetoResultado = new ObjetoResultado();
+    async novo(conexao: any, usuario: Usuario, res: Response): Promise<any> {
+        const usuarioPersistence: UsuarioPersistence = new UsuarioPersistence(conexao);
+        const resultado: ObjetoResultado = new ObjetoResultado();
         try {
             resultado.item = await usuarioPersistence.novo(usuario);
             resultado.status = CodigosResposta[CodigosResposta.SUCESSO];
@@ -61,9 +61,9 @@ class UsuarioService {
         }
     }
 
-    async atualizar(conexao: any, usuario: Usuario, res: Response) {
-        let usuarioPersistence: UsuarioPersistence = new UsuarioPersistence(conexao);
-        let resultado: ObjetoResultado = new ObjetoResultado();
+    async atualizar(conexao: any, usuario: Usuario, res: Response): Promise<any> {
+        const usuarioPersistence: UsuarioPersistence = new UsuarioPersistence(conexao);
+        const resultado: ObjetoResultado = new ObjetoResultado();
         try {
             resultado.item = await usuarioPersistence.atualizar(usuario);
             resultado.status = CodigosResposta[CodigosResposta.SUCESSO];
@@ -75,9 +75,9 @@ class UsuarioService {
         }
     }
 
-    async inativar(conexao: any, id: number, res: Response) {
-        let usuarioPersistence: UsuarioPersistence = new UsuarioPersistence(conexao);
-        let resultado: ObjetoResultado = new ObjetoResultado();
+    async inativar(conexao: any, id: number, res: Response): Promise<any> {
+        const usuarioPersistence: UsuarioPersistence = new UsuarioPersistence(conexao);
+        const resultado: ObjetoResultado = new ObjetoResultado();
         try {
             resultado.item = await usuarioPersistence.inativar(id);
             resultado.status = CodigosResposta[CodigosResposta.SUCESSO];

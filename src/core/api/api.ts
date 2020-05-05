@@ -19,7 +19,7 @@ class Api {
         this.router();
     }
     
-    configurarLogger() {
+    configurarLogger(): void {
         configure({
             appenders: { logger: { type: "file", filename: "logger.log" } },
             categories: { default: { appenders: ["logger"], level: "error" } }
@@ -37,7 +37,7 @@ class Api {
         this.express.use(Auth.config().initialize());
     }
 
-    private configHeaders(req: Request, res: Response, next: NextFunction) {
+    private configHeaders(req: Request, res: Response, next: NextFunction): void {
         res.setHeader('Access-Control-Allow-Origin', '*');
         res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
         res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
@@ -46,7 +46,7 @@ class Api {
         next();
     }
 
-    private removeNullsResponse() {
+    private removeNullsResponse(): void {
         this.express.set('json replacer', function (key: any, value: any) {
             if (value) {
                 return value;

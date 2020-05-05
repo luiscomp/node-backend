@@ -4,25 +4,23 @@ import Usuario from '../model/Usuario';
 
 class EmpresaRoutes {
 
-    constructor() {}
-
-    listar(req: Request, res: Response) {
+    listar(req: Request, res: Response): any {
         return new EmpresaService(req.user as Usuario).listar(req.connection, req.body, parseInt(req.params.pagina), res);
     }
 
-    recuperar(req: Request, res: Response) {
+    recuperar(req: Request, res: Response): any {
         return new EmpresaService(req.user as Usuario).recuperar(req.connection, parseInt(req.params.id), res);
     }
 
-    novo(req: Request, res: Response) {
+    novo(req: Request, res: Response): any {
         return new EmpresaService(req.user as Usuario).novo(req.connection, req.body, res);
     }
 
-    atualizar(req: Request, res: Response) {
+    atualizar(req: Request, res: Response): any {
         return new EmpresaService(req.user as Usuario).atualizar(req.connection, req.body, res);
     }
 
-    inativar(req: Request, res: Response) {
+    inativar(req: Request, res: Response): any {
         return new EmpresaService(req.user as Usuario).inativar(req.connection, parseInt(req.params.id), res);
     }
 }

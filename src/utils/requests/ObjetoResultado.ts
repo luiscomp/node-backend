@@ -8,8 +8,6 @@ class ObjetoResultado implements IObjetoResultado {
     lista?: any[];
     quantidade?: number;
     token?: string;
-
-    constructor() {}
 }
 
 export default ObjetoResultado;

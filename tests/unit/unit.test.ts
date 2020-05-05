@@ -1,5 +1,5 @@
-import { testDouble, expect } from './config/helpers';
-import PoolFactory from '../../src/core/db/PoolFactory';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { testDouble, expect, conexao } from './config/helpers';
 import TestPersistence from '../../src/modules/persistence/TestPersistence';
 import EmpresaPersistence from '../../src/modules/persistence/EmpresaPersistence';
 import UsuarioPersistence from '../../src/modules/persistence/UsuarioPersistence';
@@ -8,8 +8,6 @@ import Empresa from '../../src/modules/model/Empresa';
 import PerfilUsuario from '../../src/modules/model/enums/PerfilUsuario';
 
 describe('Testes Unitários de Persistência', () => {
-    const conexao = new PoolFactory().getPool();
-    
     const empresa: Empresa = new Empresa();
     const usuario: Usuario = new Usuario();
 
@@ -34,9 +32,9 @@ describe('Testes Unitários de Persistência', () => {
     beforeEach(async function() {
         this.timeout(5000);
 
-        let testPersistence: TestPersistence = new TestPersistence(conexao);
-        let empresaPersistence: EmpresaPersistence = new EmpresaPersistence(conexao);
-        let usuarioPersistence: UsuarioPersistence = new UsuarioPersistence(conexao);
+        const testPersistence: TestPersistence = new TestPersistence(conexao);
+        const empresaPersistence: EmpresaPersistence = new EmpresaPersistence(conexao);
+        const usuarioPersistence: UsuarioPersistence = new UsuarioPersistence(conexao);
 
         await testPersistence.limparSchema();
         await empresaPersistence.novo(empresa);
@@ -45,7 +43,7 @@ describe('Testes Unitários de Persistência', () => {
 
     describe('Método listar()', () => {
         it('Deve retornar uma lista com todos os usuários', async () => {
-            let usuarioPersistence: UsuarioPersistence = new UsuarioPersistence(conexao);
+            const usuarioPersistence: UsuarioPersistence = new UsuarioPersistence(conexao);
 
             const data = await usuarioPersistence.listar(usuario, -1);
 
@@ -56,7 +54,7 @@ describe('Testes Unitários de Persistência', () => {
 
     describe('Método quantidade()', () => {
         it('Deve retornar a quantidade de usuários de acordo com o filtro passado', async () => {
-            let usuarioPersistence: UsuarioPersistence = new UsuarioPersistence(conexao);
+            const usuarioPersistence: UsuarioPersistence = new UsuarioPersistence(conexao);
 
             const data = await usuarioPersistence.quantidade(usuario);
 
@@ -67,7 +65,7 @@ describe('Testes Unitários de Persistência', () => {
 
     describe('Método recuperar()', () => {
         it('Deve retornar um objeto do tipo Usuario', async () => {
-            let usuarioPersistence: UsuarioPersistence = new UsuarioPersistence(conexao);
+            const usuarioPersistence: UsuarioPersistence = new UsuarioPersistence(conexao);
 
             const data = await usuarioPersistence.recuperar(1);
 
@@ -80,7 +78,7 @@ describe('Testes Unitários de Persistência', () => {
 
     describe('Método novo()', () => {
         it('Deve criar um novo usuário', async () => {
-            let usuarioPersistence: UsuarioPersistence = new UsuarioPersistence(conexao);
+            const usuarioPersistence: UsuarioPersistence = new UsuarioPersistence(conexao);
 
             const data = await usuarioPersistence.novo(usuario);
             await expect(Promise.resolve(data)).to.eventually.be.an('object');
@@ -92,7 +90,7 @@ describe('Testes Unitários de Persistência', () => {
 
     describe('Método atualizar()', () => {
         it('Deve atualizar o usuário padrão', async () => {
-            let usuarioPersistence: UsuarioPersistence = new UsuarioPersistence(conexao);
+            const usuarioPersistence: UsuarioPersistence = new UsuarioPersistence(conexao);
 
             const usuario2: Usuario = { 
                 ...usuario, 
@@ -113,7 +111,7 @@ describe('Testes Unitários de Persistência', () => {
 
     describe('Método inativar()', () => {
         it('Deve inativar um usuário', async () => {
-            let usuarioPersistence: UsuarioPersistence = new UsuarioPersistence(conexao);
+            const usuarioPersistence: UsuarioPersistence = new UsuarioPersistence(conexao);
 
             await usuarioPersistence.inativar(usuario.id);
             const data: Usuario = await usuarioPersistence.recuperar(usuario.id);

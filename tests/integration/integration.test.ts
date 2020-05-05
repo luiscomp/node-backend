@@ -1,24 +1,21 @@
 import * as HTTPStatus from 'http-status';
 import * as jwt from 'jsonwebtoken';
-import { app, request, expect } from './config/helpers';
+import { app, request, expect, conexao } from './config/helpers';
 import CodigosResposta from '../../src/utils/requests/CodigosResposta';
 import Empresa from '../../src/modules/model/Empresa';
 import Usuario from '../../src/modules/model/Usuario';
 import EmpresaPersistence from '../../src/modules/persistence/EmpresaPersistence';
 import UsuarioPersistence from '../../src/modules/persistence/UsuarioPersistence'
 import TestPersistence from '../../src/modules/persistence/TestPersistence';
-import PoolFactory from '../../src/core/db/PoolFactory';
 import PerfilUsuario from '../../src/modules/model/enums/PerfilUsuario';
-require('events').EventEmitter.prototype._maxListeners = 100;
 
 describe('Testes de Integração', () => {
 
     'use strict';
     const config = require('../../src/config/config')();
-    const conexao = new PoolFactory().getPool();
     const empresa: Empresa = new Empresa();
     const usuario: Usuario = new Usuario();
-    let token: String;
+    let token: string;
 
     before(done => {
         empresa.id = 1;
@@ -41,9 +38,9 @@ describe('Testes de Integração', () => {
     beforeEach(async function() {
         this.timeout(5000);
 
-        let testPersistence: TestPersistence = new TestPersistence(conexao);
-        let empresaPersistence: EmpresaPersistence = new EmpresaPersistence(conexao);
-        let usuarioPersistence: UsuarioPersistence = new UsuarioPersistence(conexao);
+        const testPersistence: TestPersistence = new TestPersistence(conexao);
+        const empresaPersistence: EmpresaPersistence = new EmpresaPersistence(conexao);
+        const usuarioPersistence: UsuarioPersistence = new UsuarioPersistence(conexao);
 
         await testPersistence.limparSchema();
         await empresaPersistence.novo(empresa);

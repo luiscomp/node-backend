@@ -11,8 +11,6 @@ class Usuario implements IUsuario {
     ultimoAcesso?: Date;
     inativo?: boolean;
     empresa: Empresa;
-
-    constructor() {}
 }
 
 export default Usuario;

@@ -4,28 +4,38 @@ import ObjetoResultado from '../utils/requests/ObjetoResultado';
 import CodigosResposta from '../utils/requests/CodigosResposta';
 import { Request, Response, NextFunction } from 'express';
 
-var ajv = new Ajv({allErrors: true, jsonPointers: true})
+const ajv = new Ajv({allErrors: true, jsonPointers: true})
 require('ajv-errors')(ajv);
 
-export function validador(schema : any) {
+function adicionarReferencias(schema: any): void {
+    schema.referencias.forEach((schema: any) => {
+        if(!ajv.getSchema(schema.$id)) {
+            ajv.addSchema(schema)
+        }
+        if(schema.referencias) {
+            adicionarReferencias(schema)
+        }
+    })
+    return;
+}
+
+export function validador(schema: any): any {
     
-    ajv.addSchema(schema);
+    if(!ajv.getSchema(schema.$id)) {
+        ajv.addSchema(schema)
+    }
     if(schema.referencias) {
-        schema.referencias.forEach((schema: any) => {
-            if(!ajv.getSchema(schema.$id)) {
-                ajv.addSchema(schema)
-            }
-        })
+        adicionarReferencias(schema)
     }
 
-    return function(req: Request, res: Response, next: NextFunction) {
-        var validate = ajv.compile(schema)
-        var isValid = validate(req.body);
+    return function(req: Request, res: Response, next: NextFunction): void {
+        const validate = ajv.compile(schema)
+        const isValid = validate(req.body);
 
         if(isValid) {
             next();
         } else {
-            let resultado = new ObjetoResultado();
+            const resultado = new ObjetoResultado();
             resultado.status = CodigosResposta[CodigosResposta.SCHEMA_INVALIDO];
             resultado.mensagem = 'Dados enviados não correspondem com as regras de validação.'
             resultado.erros = validate.errors.map((error: any) => error.message);

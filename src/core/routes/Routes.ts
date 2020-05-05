@@ -9,7 +9,7 @@ import EmpresaRoutes from '../../modules/routes/EmpresaRoutes';
 
 class Routes {
 
-    public initRoutes(app: Application, auth: any) {
+    public initRoutes(app: Application, auth: any): void {
         this.initAuthRoutes(app);
         this.initUsuarioRoutes(app, auth);
         this.initEmpresaRoutes(app, auth);

@@ -1,6 +1,6 @@
 class PersistenceUtils {
 
-    incluirFiltros(sql: string, obj: any, tabela: string) {
+    incluirFiltros(sql: string, obj: any, tabela: string): string {
         Object.keys(obj).forEach(attr => {
             if(obj[attr] !== null && obj[attr] !== undefined && (typeof obj[attr] !== 'object')) {
                 sql = this.incluirClausulaNoWhereAND(sql, `${tabela}.${attr} = ?`);
@@ -10,8 +10,8 @@ class PersistenceUtils {
         return sql;
     }
 
-    montarParametros(obj: any) {
-        let parametros: Array<any> = new Array<any>();
+    montarParametros(obj: any): Array<any> {
+        const parametros: Array<any> = new Array<any>();
 
         Object.keys(obj).forEach(attr => {
             if(obj[attr] !== null && obj[attr] !== undefined) {
@@ -45,7 +45,7 @@ class PersistenceUtils {
         return sqlQuery;
     }
 
-    insert(str: string, index: number, value: string) {
+    insert(str: string, index: number, value: string): string {
         return str.substr(0, index) + value + str.substr(index);
     }
 }

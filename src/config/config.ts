@@ -1,4 +1,4 @@
-let extension: string = 'js'
+let extension = 'js'
 if(process.env.NODE_ENV == 'development') extension = 'ts';
 
-module.exports = () => require(`./env/${process.env.NODE_ENV}.env.${extension}`)
+module.exports = (): any => require(`./env/${process.env.NODE_ENV}.env.${extension}`)

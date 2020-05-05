@@ -72,7 +72,7 @@ class EmpresaPersistence extends PersistenceUtils {
     novo(empresa: Empresa): Promise<Empresa> {
         return new Promise(async (resolve, reject) => {
             let results: any;
-            let parametros = [];
+            const parametros = [];
             try {
                 parametros.push(empresa.codigo);
                 parametros.push(empresa.proprietario);
@@ -92,7 +92,7 @@ class EmpresaPersistence extends PersistenceUtils {
     
     atualizar(empresa: Empresa): Promise<Empresa> {
         return new Promise(async (resolve, reject) => {
-            let parametros = [];
+            const parametros = [];
             try {
                 parametros.push(empresa.codigo);
                 parametros.push(empresa.proprietario);

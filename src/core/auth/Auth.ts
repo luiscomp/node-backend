@@ -7,15 +7,15 @@ const config = require('../../config/config')();
 
 class Auth {
     
-    config() {
-        let opts = {
+    config(): any {
+        const opts = {
             secretOrKey: config.secret,
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
             passReqToCallback: true
         }
     
         passport.use(new Strategy(opts, (req: Request, jwtPayload: any, done: VerifiedCallback) => {
-            let usuarioPersistence: UsuarioPersistence = new UsuarioPersistence(req.connection)
+            const usuarioPersistence: UsuarioPersistence = new UsuarioPersistence(req.connection)
 
             usuarioPersistence.recuperar(jwtPayload.id).then(usuario => {
                 if(usuario) {
@@ -30,8 +30,8 @@ class Auth {
         }));
 
         return {
-            initialize: () => passport.initialize(),
-            authenticate: () => passport.authenticate('jwt', { session: false })
+            initialize: (): any => passport.initialize(),
+            authenticate: (): any => passport.authenticate('jwt', { session: false })
         }
     }
 }
